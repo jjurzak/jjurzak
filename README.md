@@ -71,7 +71,6 @@ A code-first relational data management system.
   <img src="https://github-readme-stats.vercel.app/api?username=jjurzak&show_icons=true&theme=nightowl" height="150" alt="Jakub's GitHub stats" />
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=jjurzak&layout=compact&theme=nightowl" height="150" alt="Top Langs" />
 </div>
----
 
 ## 📫 Connect with me
 
