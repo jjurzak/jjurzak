@@ -1,36 +1,29 @@
 name: Update GitHub Stats
-
 on:
-  schedule:
-    - cron: "0 */12 * * *"
+  schedule: [{ cron: "0 */12 * * *" }]
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/generate-stats.yml"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.10"
+      - uses: actions/setup-python@v4
+        with: { python-version: "3.10" }
 
-    - name: Install dependencies
-      run: pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-    - name: Run stat generator
-      run: python stats/generate_stats.py
+      - name: Run generator
+        env:
+          THEME: dark
+        run: python stats/generate_stats.py
 
-    - name: Commit changes
-      run: |
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
-        git add stats/card.svg
-        git commit -m "Update stats card" || echo "No changes"
-        git push
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add stats/*.svg
+          git commit -m "Update stat cards" || echo "no changes"
+          git push
