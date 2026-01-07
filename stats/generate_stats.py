@@ -37,9 +37,10 @@ if created_at:
 else:
     account_age_days = 0
 
-# Top repos by commits (excluding jjurzak repo)
-print("🔍 Analyzing repo contributions...")
+# Top repos by commits in last 6 months (excluding jjurzak repo)
+print("🔍 Analyzing repo contributions (last 6 months)...")
 repo_stats = []
+six_months_ago = datetime.utcnow() - timedelta(days=180)
 
 for repo in repos:
     if repo.get("fork", False) or repo.get("name") == "jjurzak":
@@ -48,46 +49,38 @@ for repo in repos:
     repo_name = repo.get("name", "")
     print(f"  Checking {repo_name}...")
     
-    # Get commit count and activity
-    stats_url = f"https://api.github.com/repos/{USERNAME}/{repo_name}/stats/contributors"
-    stats = fetch(stats_url)
+    # Get commits from last 6 months
+    since_date = six_months_ago.strftime("%Y-%m-%dT%H:%M:%SZ")
+    commits_url = f"https://api.github.com/repos/{USERNAME}/{repo_name}/commits?author={USERNAME}&since={since_date}&per_page=100"
+    commits = fetch(commits_url)
     
     commit_count = 0
-    weekly_commits = []
+    weekly_commits = [0] * 26  # 26 weeks = ~6 months
     
-    if stats and isinstance(stats, list):
-        for contributor in stats:
-            if contributor.get("author", {}).get("login") == USERNAME:
-                commit_count = contributor.get("total", 0)
-                # Get last 12 weeks of activity
-                weeks = contributor.get("weeks", [])
-                if len(weeks) >= 12:
-                    weekly_commits = [w.get("c", 0) for w in weeks[-12:]]
-                else:
-                    weekly_commits = [w.get("c", 0) for w in weeks]
-                # Pad with zeros if less than 12 weeks
-                while len(weekly_commits) < 12:
-                    weekly_commits.insert(0, 0)
-                break
+    if commits and isinstance(commits, list):
+        commit_count = len(commits)
+        
+        # Group commits by week
+        for commit in commits:
+            try:
+                commit_date = commit.get("commit", {}).get("author", {}).get("date", "")
+                if commit_date:
+                    t = datetime.strptime(commit_date, "%Y-%m-%dT%H:%M:%SZ")
+                    weeks_ago = (datetime.utcnow() - t).days // 7
+                    if 0 <= weeks_ago < 26:
+                        weekly_commits[25 - weeks_ago] += 1
+            except:
+                continue
     
-    # Fallback: try to get commit count from commits API
-    if commit_count == 0:
-        commits_url = f"https://api.github.com/repos/{USERNAME}/{repo_name}/commits?author={USERNAME}&per_page=100"
-        commits = fetch(commits_url)
-        if commits and isinstance(commits, list):
-            commit_count = len(commits)
-            # Generate fake but reasonable activity pattern
-            weekly_commits = [max(0, commit_count // 12 + (i % 3 - 1)) for i in range(12)]
-    
-    if commit_count > 0:  # Only include repos with commits
+    if commit_count > 0:
         repo_stats.append({
             "repo": repo,
             "commits": commit_count,
-            "weekly": weekly_commits if weekly_commits else [1] * 12
+            "weekly": weekly_commits
         })
         print(f"    ✓ {commit_count} commits")
     else:
-        print(f"    ✗ No commits found")
+        print(f"    ✗ No commits in last 6 months")
 
 # Sort by commits
 top_repos = sorted(repo_stats, key=lambda x: x["commits"], reverse=True)[:3]
@@ -284,20 +277,30 @@ else:
         y_pos = y_start + i * 80
         lang_color = get_lang_color(lang)
         
-        # Generate EKG-style line chart
+        # Generate contribution-style line chart (like GitHub)
         max_weekly = max(weekly_data) if weekly_data and max(weekly_data) > 0 else 1
-        ekg_points = []
-        chart_width = 250
-        chart_height = 25
-        chart_x = 220
-        chart_y = y_pos + 10
+        chart_width = 240
+        chart_height = 30
+        chart_x = 225
+        chart_y = y_pos + 5
         
+        # Create smooth path points
+        points = []
         for j, count in enumerate(weekly_data):
             x = chart_x + (j / max(len(weekly_data) - 1, 1)) * chart_width
-            y = chart_y + chart_height - (count / max_weekly) * chart_height
-            ekg_points.append(f"{x},{y}")
+            # Normalize height - fuller bars like GitHub
+            normalized = (count / max_weekly) if max_weekly > 0 else 0
+            y = chart_y + chart_height - (normalized * chart_height * 0.8)  # 80% max height
+            points.append((x, y))
         
-        ekg_path = " ".join(ekg_points)
+        # Create area fill path (like GitHub contribution graph)
+        area_path = f"M {chart_x},{chart_y + chart_height} "
+        for x, y in points:
+            area_path += f"L {x},{y} "
+        area_path += f"L {chart_x + chart_width},{chart_y + chart_height} Z"
+        
+        # Create line path
+        line_path = " ".join([f"{x},{y}" for x, y in points])
         
         repo_items.append(f"""
     <!-- {name} -->
@@ -311,13 +314,23 @@ else:
         <text x="100" y="4" class="repo-stat">📝 {commits} commits</text>
       </g>
       
-      <!-- EKG Chart -->
-      <g opacity="0.8">
-        <polyline points="{ekg_path}" fill="none" stroke="{lang_color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <animate attributeName="stroke-dasharray" from="0,1000" to="1000,0" dur="1.5s" fill="freeze"/>
+      <!-- Contribution Graph (GitHub style) -->
+      <g opacity="0.9">
+        <!-- Area fill with gradient -->
+        <defs>
+          <linearGradient id="areaGrad{i}" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:{lang_color};stop-opacity:0.4" />
+            <stop offset="100%" style="stop-color:{lang_color};stop-opacity:0.05" />
+          </linearGradient>
+        </defs>
+        <path d="{area_path}" fill="url(#areaGrad{i})">
+          <animate attributeName="opacity" from="0" to="1" dur="0.8s" fill="freeze"/>
+        </path>
+        
+        <!-- Line -->
+        <polyline points="{line_path}" fill="none" stroke="{lang_color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <animate attributeName="stroke-dasharray" from="0,1000" to="1000,0" dur="1.2s" fill="freeze"/>
         </polyline>
-        <!-- Glow effect -->
-        <polyline points="{ekg_path}" fill="none" stroke="{lang_color}" stroke-width="5" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
       </g>
     </g>
   """)
@@ -345,7 +358,7 @@ repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
   <rect x="0" y="0" width="495" height="{height}" rx="10" class="border"/>
 
   <!-- Header -->
-  <text x="24" y="38" class="title">🚀 My Contributions</text>
+  <text x="24" y="38" class="title">🚀 My Contributions (6 months)</text>
 
   <!-- Repos -->
   {repo_section}
@@ -512,7 +525,7 @@ with open("stats/overview.svg", "w") as f:
 
 with open("stats/repos.svg", "w") as f:
     f.write(repos_svg)
-    print("✅ stats/repos.svg (NEW - top repos with EKG)")
+    print("✅ stats/repos.svg (6 months, GitHub-style graph)")
 
 with open("stats/weekly.svg", "w") as f:
     f.write(weekly_svg)
