@@ -37,10 +37,6 @@ if created_at:
 else:
     account_age_days = 0
 
-# Repo stats
-total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
-total_forks = sum(repo.get("forks_count", 0) for repo in repos)
-
 # Top repos by commits (excluding jjurzak repo)
 print("🔍 Analyzing repo contributions...")
 repo_stats = []
@@ -114,7 +110,7 @@ events = fetch(f"https://api.github.com/users/{USERNAME}/events?per_page=100") o
 cutoff = datetime.utcnow() - timedelta(days=7)
 cutoff30 = datetime.utcnow() - timedelta(days=30)
 
-weekly = Counter()
+weekly_activity = Counter()
 commit_hours = Counter()
 
 for evt in events:
@@ -122,7 +118,7 @@ for evt in events:
         t = datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ")
         if t >= cutoff:
             day = t.strftime("%a")
-            weekly[day] += 1
+            weekly_activity[day] += 1
         if t >= cutoff30:
             commit_hours[t.hour] += 1
     except:
@@ -133,9 +129,6 @@ streak = sum(
     if "created_at" in evt and
     datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ") >= cutoff30
 )
-
-# Convert days to full names for weekly Counter
-days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 # ==================== COLOR THEME ====================
 
@@ -276,7 +269,7 @@ else:
     for i, item in enumerate(top_repos[:3]):
         repo = item["repo"]
         commits = item["commits"]
-        weekly = item["weekly"]
+        weekly_data = item["weekly"]
         
         name = repo.get("name", "")
         desc = repo.get("description", "")
@@ -292,15 +285,15 @@ else:
         lang_color = get_lang_color(lang)
         
         # Generate EKG-style line chart
-        max_weekly = max(weekly) if weekly and max(weekly) > 0 else 1
+        max_weekly = max(weekly_data) if weekly_data and max(weekly_data) > 0 else 1
         ekg_points = []
         chart_width = 250
         chart_height = 25
         chart_x = 220
         chart_y = y_pos + 10
         
-        for j, count in enumerate(weekly):
-            x = chart_x + (j / max(len(weekly) - 1, 1)) * chart_width
+        for j, count in enumerate(weekly_data):
+            x = chart_x + (j / max(len(weekly_data) - 1, 1)) * chart_width
             y = chart_y + chart_height - (count / max_weekly) * chart_height
             ekg_points.append(f"{x},{y}")
         
@@ -360,14 +353,15 @@ repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
 
 # ==================== SVG CARD 3: WEEKLY ACTIVITY (FIXED) ====================
 
-max_activity = max([weekly.get(d, 0) for d in days_short], default=1)
+days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+max_activity = max([weekly_activity.get(d, 0) for d in days_short], default=1)
 
 activity_bars = []
 bar_spacing = 60
 start_x = 40
 
 for i, day in enumerate(days_short):
-    count = weekly.get(day, 0)
+    count = weekly_activity.get(day, 0)
     # Fixed: max bar height is now 70px instead of 90px
     bar_height = max((count / max(max_activity, 1)) * 70, 3) if count > 0 else 0
     
@@ -518,7 +512,7 @@ with open("stats/overview.svg", "w") as f:
 
 with open("stats/repos.svg", "w") as f:
     f.write(repos_svg)
-    print("✅ stats/repos.svg (NEW - top starred repos)")
+    print("✅ stats/repos.svg (NEW - top repos with EKG)")
 
 with open("stats/weekly.svg", "w") as f:
     f.write(weekly_svg)
