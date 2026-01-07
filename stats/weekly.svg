@@ -40,12 +40,12 @@
 
     <!-- Tue -->
     <g>
-      <rect x="100" y="105.83333333333333" width="45" height="29.166666666666668" rx="6" 
-            fill="#39D353" opacity="0.7083333333333334">
-        <animate attributeName="height" from="0" to="29.166666666666668" dur="0.6s" begin="0.1s" fill="freeze"/>
-        <animate attributeName="y" from="135" to="105.83333333333333" dur="0.6s" begin="0.1s" fill="freeze"/>
+      <rect x="100" y="109.07407407407408" width="45" height="25.925925925925924" rx="6" 
+            fill="#39D353" opacity="0.6851851851851851">
+        <animate attributeName="height" from="0" to="25.925925925925924" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="109.07407407407408" dur="0.6s" begin="0.1s" fill="freeze"/>
       </rect>
-      <text x="122.5" y="97.83333333333333" text-anchor="middle" class="count">10</text>
+      <text x="122.5" y="101.07407407407408" text-anchor="middle" class="count">10</text>
       <text x="122.5" y="153" text-anchor="middle" class="day-label">Tue</text>
     </g>
   
@@ -57,7 +57,7 @@
         <animate attributeName="height" from="0" to="70.0" dur="0.6s" begin="0.2s" fill="freeze"/>
         <animate attributeName="y" from="135" to="65.0" dur="0.6s" begin="0.2s" fill="freeze"/>
       </rect>
-      <text x="182.5" y="57.0" text-anchor="middle" class="count">24</text>
+      <text x="182.5" y="57.0" text-anchor="middle" class="count">27</text>
       <text x="182.5" y="153" text-anchor="middle" class="day-label">Wed</text>
     </g>
   
