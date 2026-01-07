@@ -80,13 +80,7 @@ A code-first relational data management system.
 ## 📊 GitHub Activity
 
 <div align="center">
-  <img src="stats/overview.svg" alt="GitHub Stats" />
-  <img src="stats/repos.svg" alt="Top Contributions" />
-</div>
-
-<div align="center">
-  <img src="stats/weekly.svg" alt="Weekly Activity" />
-  <img src="stats/time.svg" alt="Coding Time" />
+  <img src="stats/dashboard.svg" alt="GitHub Activity Dashboard" width="100%" />
 </div>
 
 ---
