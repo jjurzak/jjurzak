@@ -29,7 +29,7 @@
       <rect x="30" y="75" width="55" height="70" rx="8" 
             fill="#39D353" opacity="1.0"/>
       <text x="57.5" y="100" text-anchor="middle" class="emoji">🔥</text>
-      <text x="57.5" y="120" text-anchor="middle" class="time-count">32</text>
+      <text x="57.5" y="120" text-anchor="middle" class="time-count">33</text>
       <text x="57.5" y="165" text-anchor="middle" class="time-label">Night</text>
       <text x="57.5" y="178" text-anchor="middle" class="time-label">(00-04)</text>
     </g>
@@ -63,7 +63,7 @@
 (12-16) -->
     <g>
       <rect x="225" y="75" width="55" height="70" rx="8" 
-            fill="#006D32" opacity="0.365625"/>
+            fill="#006D32" opacity="0.36363636363636365"/>
       <text x="252.5" y="100" text-anchor="middle" class="emoji">✨</text>
       <text x="252.5" y="120" text-anchor="middle" class="time-count">3</text>
       <text x="252.5" y="165" text-anchor="middle" class="time-label">Afternoon</text>
@@ -75,7 +75,7 @@
 (16-20) -->
     <g>
       <rect x="290" y="75" width="55" height="70" rx="8" 
-            fill="#006D32" opacity="0.32187499999999997"/>
+            fill="#006D32" opacity="0.32121212121212117"/>
       <text x="317.5" y="100" text-anchor="middle" class="emoji">✨</text>
       <text x="317.5" y="120" text-anchor="middle" class="time-count">1</text>
       <text x="317.5" y="165" text-anchor="middle" class="time-label">Evening</text>
@@ -87,7 +87,7 @@
 (20-24) -->
     <g>
       <rect x="355" y="75" width="55" height="70" rx="8" 
-            fill="#006D32" opacity="0.5406249999999999"/>
+            fill="#006D32" opacity="0.5333333333333333"/>
       <text x="382.5" y="100" text-anchor="middle" class="emoji">✨</text>
       <text x="382.5" y="120" text-anchor="middle" class="time-count">11</text>
       <text x="382.5" y="165" text-anchor="middle" class="time-label">Night</text>
