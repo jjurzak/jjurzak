@@ -134,6 +134,9 @@ streak = sum(
     datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ") >= cutoff30
 )
 
+# Convert days to full names for weekly Counter
+days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
 # ==================== COLOR THEME ====================
 
 MODE = os.getenv("THEME", "dark").lower()
@@ -357,7 +360,6 @@ repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
 
 # ==================== SVG CARD 3: WEEKLY ACTIVITY (FIXED) ====================
 
-days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 max_activity = max([weekly.get(d, 0) for d in days_short], default=1)
 
 activity_bars = []
