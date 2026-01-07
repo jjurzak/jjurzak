@@ -1,31 +1,31 @@
-<svg width="495" height="900" viewBox="0 0 495 900" xmlns="http://www.w3.org/2000/svg">
+<svg width="495" height="732" viewBox="0 0 495 732" xmlns="http://www.w3.org/2000/svg">
   <defs>
     
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
     .bg { fill: #161B22; }
     .border { fill: none; stroke: #30363D; stroke-width: 1; }
-    .title { fill: #C9D1D9; font-size: 20px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .username { fill: #8B949E; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }
-    .stat-label { fill: #8B949E; font-size: 11px; font-weight: 500; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-    .stat-value { fill: #58A6FF; font-size: 28px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .footer { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
-    .icon-circle { fill: url(#grad1); opacity: 0.1; }
+    .title { fill: #C9D1D9; font-size: 18px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .username { fill: #8B949E; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .stat-label { fill: #8B949E; font-size: 10px; font-weight: 500; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { fill: #58A6FF; font-size: 24px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .footer { fill: #8B949E; font-size: 9px; font-family: 'Inter', sans-serif; }
+    .icon-circle { fill: url(#grad1); opacity: 0.08; }
     .divider { stroke: #30363D; stroke-width: 1; opacity: 0.5; }
 
-    .repo-name { fill: #58A6FF; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; }
-    .repo-desc { fill: #8B949E; font-size: 11px; font-family: 'Inter', sans-serif; }
-    .repo-lang { fill: #C9D1D9; font-size: 11px; font-family: 'Inter', sans-serif; }
-    .repo-stat { fill: #8B949E; font-size: 11px; font-family: 'Inter', sans-serif; }
+    .repo-name { fill: #58A6FF; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; }
+    .repo-desc { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
+    .repo-lang { fill: #C9D1D9; font-size: 10px; font-family: 'Inter', sans-serif; }
+    .repo-stat { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
 
-    .subtitle { fill: #8B949E; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; }
-    .day-label { fill: #8B949E; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; }
-    .count { fill: #58A6FF; font-size: 11px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .subtitle { fill: #8B949E; font-size: 11px; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .day-label { fill: #8B949E; font-size: 9px; font-weight: 600; font-family: 'Inter', sans-serif; }
+    .count { fill: #58A6FF; font-size: 10px; font-weight: 700; font-family: 'Inter', sans-serif; }
     .baseline { stroke: #30363D; stroke-width: 1; opacity: 0.3; stroke-dasharray: 4,4; }
 
-    .emoji { font-size: 18px; }
-    .time-count { fill: #58A6FF; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .time-label { fill: #8B949E; font-size: 9px; font-family: 'Inter', sans-serif; }
+    .emoji { font-size: 16px; }
+    .time-count { fill: #58A6FF; font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .time-label { fill: #8B949E; font-size: 8px; font-family: 'Inter', sans-serif; }
 </style>
 
     
@@ -33,203 +33,202 @@
     <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
     <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
 </linearGradient>
-<linearGradient id="areaGrad0" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.05" /></linearGradient><linearGradient id="areaGrad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.05" /></linearGradient><linearGradient id="areaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#1F6FEB;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#1F6FEB;stop-opacity:0.05" /></linearGradient>
+<linearGradient id="areaGrad0" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#1F6FEB;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#1F6FEB;stop-opacity:0.03" /></linearGradient>
   </defs>
 
   <g transform="translate(0, 0)">
     
-  <rect class="bg" x="0" y="0" width="495" height="170" rx="10"/>
-  <rect x="0" y="0" width="495" height="170" rx="10" class="border"/>
+  <rect class="bg" x="0" y="0" width="495" height="140" rx="10"/>
+  <rect x="0" y="0" width="495" height="140" rx="10" class="border"/>
 
-  <circle class="icon-circle" cx="440" cy="35" r="55"/>
-  <circle class="icon-circle" cx="40" cy="145" r="35"/>
+  <circle class="icon-circle" cx="430" cy="30" r="50"/>
 
-  <text x="20" y="34" class="title">📊 GitHub Stats</text>
-  <text x="20" y="52" class="username">@jjurzak</text>
+  <text x="18" y="30" class="title">📊 GitHub Stats</text>
+  <text x="18" y="46" class="username">@jjurzak</text>
 
-  <line x1="165" y1="75" x2="165" y2="135" class="divider"/>
-  <line x1="330" y1="75" x2="330" y2="135" class="divider"/>
+  <line x1="165" y1="65" x2="165" y2="110" class="divider"/>
+  <line x1="330" y1="65" x2="330" y2="110" class="divider"/>
 
   <g>
-    <text x="82" y="108" text-anchor="middle" class="stat-value">14</text>
-    <text x="82" y="125" text-anchor="middle" class="stat-label">Repositories</text>
+    <text x="82" y="92" text-anchor="middle" class="stat-value">14</text>
+    <text x="82" y="107" text-anchor="middle" class="stat-label">Repositories</text>
 
-    <text x="247" y="108" text-anchor="middle" class="stat-value">0</text>
-    <text x="247" y="125" text-anchor="middle" class="stat-label">Followers</text>
+    <text x="247" y="92" text-anchor="middle" class="stat-value">0</text>
+    <text x="247" y="107" text-anchor="middle" class="stat-label">Followers</text>
 
-    <text x="412" y="108" text-anchor="middle" class="stat-value">60</text>
-    <text x="412" y="125" text-anchor="middle" class="stat-label">Events (30d)</text>
+    <text x="412" y="92" text-anchor="middle" class="stat-value">62</text>
+    <text x="412" y="107" text-anchor="middle" class="stat-label">Events (30d)</text>
   </g>
-  <text x="20" y="158" class="footer">↻ Updated Jan 07, 2026</text>
+  <text x="18" y="130" class="footer">↻ Updated Jan 07, 2026</text>
 
   </g>
 
-  <g transform="translate(0, 190)">
+  <g transform="translate(0, 152)">
     
-  <rect x="0" y="0" width="495" height="310" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="310" rx="10" class="border"/>
-  <text x="20" y="34" class="title">🚀 My Contributions (6 months)</text>
+  <rect x="0" y="0" width="495" height="256" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="256" rx="10" class="border"/>
+  <text x="18" y="30" class="title">🚀 My Contributions (6 months)</text>
   
-        <g opacity="0.95">
-            <text x="20" y="70" class="repo-name">NoD2</text>
-            <text x="20" y="86" class="repo-desc">No description</text>
-            <circle cx="24" cy="96" r="4" fill="#3572A5"/>
-            <text x="33" y="99" class="repo-lang">Python</text>
-            <text x="100" y="99" class="repo-stat">📝 21 commits</text>
-            <path d="M 260,100 L 260.0,100.0 L 268.0,100.0 L 276.0,100.0 L 284.0,100.0 L 292.0,100.0 L 300.0,100.0 L 308.0,100.0 L 316.0,100.0 L 324.0,100.0 L 332.0,100.0 L 340.0,100.0 L 348.0,100.0 L 356.0,100.0 L 364.0,100.0 L 372.0,100.0 L 380.0,93.0 L 388.0,96.5 L 396.0,93.0 L 404.0,86.0 L 412.0,100.0 L 420.0,79.0 L 428.0,100.0 L 436.0,86.0 L 444.0,93.0 L 452.0,100.0 L 460.0,100.0 L 460,100 Z" fill="url(#areaGrad0)"/>
-            <polyline points="260.0,100.0 268.0,100.0 276.0,100.0 284.0,100.0 292.0,100.0 300.0,100.0 308.0,100.0 316.0,100.0 324.0,100.0 332.0,100.0 340.0,100.0 348.0,100.0 356.0,100.0 364.0,100.0 372.0,100.0 380.0,93.0 388.0,96.5 396.0,93.0 404.0,86.0 412.0,100.0 420.0,79.0 428.0,100.0 436.0,86.0 444.0,93.0 452.0,100.0 460.0,100.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <g>
+            <text x="18" y="60" class="repo-name">NoD2</text>
+            <text x="18" y="74" class="repo-desc">No description</text>
+            <circle cx="21" cy="82" r="3.5" fill="#3572A5"/>
+            <text x="29" y="85" class="repo-lang">Python</text>
+            <text x="90" y="85" class="repo-stat">📝 21 commits</text>
+            <path d="M 265,84 L 265.0,84.0 L 272.6,84.0 L 280.2,84.0 L 287.8,84.0 L 295.4,84.0 L 303.0,84.0 L 310.6,84.0 L 318.2,84.0 L 325.8,84.0 L 333.4,84.0 L 341.0,84.0 L 348.6,84.0 L 356.2,84.0 L 363.8,84.0 L 371.4,84.0 L 379.0,78.4 L 386.6,81.2 L 394.20000000000005,78.4 L 401.79999999999995,72.8 L 409.4,84.0 L 417.0,67.2 L 424.6,84.0 L 432.2,72.8 L 439.8,78.4 L 447.4,84.0 L 455.0,84.0 L 455,84 Z" fill="url(#areaGrad0)"/>
+            <polyline points="265.0,84.0 272.6,84.0 280.2,84.0 287.8,84.0 295.4,84.0 303.0,84.0 310.6,84.0 318.2,84.0 325.8,84.0 333.4,84.0 341.0,84.0 348.6,84.0 356.2,84.0 363.8,84.0 371.4,84.0 379.0,78.4 386.6,81.2 394.20000000000005,78.4 401.79999999999995,72.8 409.4,84.0 417.0,67.2 424.6,84.0 432.2,72.8 439.8,78.4 447.4,84.0 455.0,84.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
-        <g opacity="0.95">
-            <text x="20" y="145" class="repo-name">Blockchain</text>
-            <text x="20" y="161" class="repo-desc">No description</text>
-            <circle cx="24" cy="171" r="4" fill="#3572A5"/>
-            <text x="33" y="174" class="repo-lang">Python</text>
-            <text x="100" y="174" class="repo-stat">📝 8 commits</text>
-            <path d="M 260,175 L 260.0,175.0 L 268.0,175.0 L 276.0,175.0 L 284.0,175.0 L 292.0,175.0 L 300.0,175.0 L 308.0,175.0 L 316.0,175.0 L 324.0,175.0 L 332.0,175.0 L 340.0,175.0 L 348.0,175.0 L 356.0,175.0 L 364.0,175.0 L 372.0,175.0 L 380.0,175.0 L 388.0,175.0 L 396.0,175.0 L 404.0,175.0 L 412.0,171.5 L 420.0,175.0 L 428.0,175.0 L 436.0,175.0 L 444.0,171.5 L 452.0,175.0 L 460.0,154.0 L 460,175 Z" fill="url(#areaGrad1)"/>
-            <polyline points="260.0,175.0 268.0,175.0 276.0,175.0 284.0,175.0 292.0,175.0 300.0,175.0 308.0,175.0 316.0,175.0 324.0,175.0 332.0,175.0 340.0,175.0 348.0,175.0 356.0,175.0 364.0,175.0 372.0,175.0 380.0,175.0 388.0,175.0 396.0,175.0 404.0,175.0 412.0,171.5 420.0,175.0 428.0,175.0 436.0,175.0 444.0,171.5 452.0,175.0 460.0,154.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <g>
+            <text x="18" y="122" class="repo-name">Blockchain</text>
+            <text x="18" y="136" class="repo-desc">No description</text>
+            <circle cx="21" cy="144" r="3.5" fill="#3572A5"/>
+            <text x="29" y="147" class="repo-lang">Python</text>
+            <text x="90" y="147" class="repo-stat">📝 8 commits</text>
+            <path d="M 265,146 L 265.0,146.0 L 272.6,146.0 L 280.2,146.0 L 287.8,146.0 L 295.4,146.0 L 303.0,146.0 L 310.6,146.0 L 318.2,146.0 L 325.8,146.0 L 333.4,146.0 L 341.0,146.0 L 348.6,146.0 L 356.2,146.0 L 363.8,146.0 L 371.4,146.0 L 379.0,146.0 L 386.6,146.0 L 394.20000000000005,146.0 L 401.79999999999995,146.0 L 409.4,143.2 L 417.0,146.0 L 424.6,146.0 L 432.2,146.0 L 439.8,143.2 L 447.4,146.0 L 455.0,129.2 L 455,146 Z" fill="url(#areaGrad1)"/>
+            <polyline points="265.0,146.0 272.6,146.0 280.2,146.0 287.8,146.0 295.4,146.0 303.0,146.0 310.6,146.0 318.2,146.0 325.8,146.0 333.4,146.0 341.0,146.0 348.6,146.0 356.2,146.0 363.8,146.0 371.4,146.0 379.0,146.0 386.6,146.0 394.20000000000005,146.0 401.79999999999995,146.0 409.4,143.2 417.0,146.0 424.6,146.0 432.2,146.0 439.8,143.2 447.4,146.0 455.0,129.2" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
-        <g opacity="0.95">
-            <text x="20" y="220" class="repo-name">IRHAS</text>
-            <text x="20" y="236" class="repo-desc">Intelligent road hazard analysis...</text>
-            <circle cx="24" cy="246" r="4" fill="#1F6FEB"/>
-            <text x="33" y="249" class="repo-lang">None</text>
-            <text x="100" y="249" class="repo-stat">📝 5 commits</text>
-            <path d="M 260,250 L 260.0,250.0 L 268.0,250.0 L 276.0,250.0 L 284.0,250.0 L 292.0,250.0 L 300.0,250.0 L 308.0,250.0 L 316.0,250.0 L 324.0,250.0 L 332.0,250.0 L 340.0,250.0 L 348.0,250.0 L 356.0,250.0 L 364.0,250.0 L 372.0,250.0 L 380.0,250.0 L 388.0,250.0 L 396.0,250.0 L 404.0,250.0 L 412.0,244.75 L 420.0,250.0 L 428.0,250.0 L 436.0,250.0 L 444.0,250.0 L 452.0,250.0 L 460.0,229.0 L 460,250 Z" fill="url(#areaGrad2)"/>
-            <polyline points="260.0,250.0 268.0,250.0 276.0,250.0 284.0,250.0 292.0,250.0 300.0,250.0 308.0,250.0 316.0,250.0 324.0,250.0 332.0,250.0 340.0,250.0 348.0,250.0 356.0,250.0 364.0,250.0 372.0,250.0 380.0,250.0 388.0,250.0 396.0,250.0 404.0,250.0 412.0,244.75 420.0,250.0 428.0,250.0 436.0,250.0 444.0,250.0 452.0,250.0 460.0,229.0" fill="none" stroke="#1F6FEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <g>
+            <text x="18" y="184" class="repo-name">IRHAS</text>
+            <text x="18" y="198" class="repo-desc">Intelligent road hazard analy...</text>
+            <circle cx="21" cy="206" r="3.5" fill="#1F6FEB"/>
+            <text x="29" y="209" class="repo-lang">None</text>
+            <text x="90" y="209" class="repo-stat">📝 5 commits</text>
+            <path d="M 265,208 L 265.0,208.0 L 272.6,208.0 L 280.2,208.0 L 287.8,208.0 L 295.4,208.0 L 303.0,208.0 L 310.6,208.0 L 318.2,208.0 L 325.8,208.0 L 333.4,208.0 L 341.0,208.0 L 348.6,208.0 L 356.2,208.0 L 363.8,208.0 L 371.4,208.0 L 379.0,208.0 L 386.6,208.0 L 394.20000000000005,208.0 L 401.79999999999995,208.0 L 409.4,203.8 L 417.0,208.0 L 424.6,208.0 L 432.2,208.0 L 439.8,208.0 L 447.4,208.0 L 455.0,191.2 L 455,208 Z" fill="url(#areaGrad2)"/>
+            <polyline points="265.0,208.0 272.6,208.0 280.2,208.0 287.8,208.0 295.4,208.0 303.0,208.0 310.6,208.0 318.2,208.0 325.8,208.0 333.4,208.0 341.0,208.0 348.6,208.0 356.2,208.0 363.8,208.0 371.4,208.0 379.0,208.0 386.6,208.0 394.20000000000005,208.0 401.79999999999995,208.0 409.4,203.8 417.0,208.0 424.6,208.0 432.2,208.0 439.8,208.0 447.4,208.0 455.0,191.2" fill="none" stroke="#1F6FEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
 
   </g>
 
-  <g transform="translate(0, 520)">
+  <g transform="translate(0, 420)">
     
-  <rect x="0" y="0" width="495" height="180" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="180" rx="10" class="border"/>
-  <text x="20" y="34" class="title">📈 Weekly Activity</text>
-  <text x="20" y="52" class="subtitle">Last 7 days</text>
-  <line x1="35" y1="125" x2="470" y2="125" class="baseline"/>
+  <rect x="0" y="0" width="495" height="150" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="150" rx="10" class="border"/>
+  <text x="18" y="30" class="title">📈 Weekly Activity</text>
+  <text x="18" y="46" class="subtitle">Last 7 days</text>
+  <line x1="32" y1="105" x2="465" y2="105" class="baseline"/>
   
     <g>
-      <rect x="35" y="125" width="42" height="0" rx="5" fill="#0D1117" opacity="0.3">
+      <rect x="32" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
         <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.0s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="125" dur="0.6s" begin="0.0s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.0s" fill="freeze"/>
       </rect>
       
-      <text x="56" y="141" text-anchor="middle" class="day-label">Mon</text>
+      <text x="52" y="119" text-anchor="middle" class="day-label">Mon</text>
     </g>
     
     <g>
-      <rect x="97" y="106.94444444444444" width="42" height="18.055555555555557" rx="5" fill="#39D353" opacity="0.6388888888888888">
-        <animate attributeName="height" from="0" to="18.055555555555557" dur="0.6s" begin="0.1s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="106.94444444444444" dur="0.6s" begin="0.1s" fill="freeze"/>
+      <rect x="94" y="90.52631578947368" width="40" height="14.473684210526315" rx="4" fill="#39D353" opacity="0.631578947368421">
+        <animate attributeName="height" from="0" to="14.473684210526315" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="90.52631578947368" dur="0.6s" begin="0.1s" fill="freeze"/>
       </rect>
-      <text x="118" y="100.94444444444444" text-anchor="middle" class="count">10</text>
-      <text x="118" y="141" text-anchor="middle" class="day-label">Tue</text>
+      <text x="114" y="85.52631578947368" text-anchor="middle" class="count">10</text>
+      <text x="114" y="119" text-anchor="middle" class="day-label">Tue</text>
     </g>
     
     <g>
-      <rect x="159" y="60.0" width="42" height="65.0" rx="5" fill="#39D353" opacity="1.0">
-        <animate attributeName="height" from="0" to="65.0" dur="0.6s" begin="0.2s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="60.0" dur="0.6s" begin="0.2s" fill="freeze"/>
+      <rect x="156" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
+        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.2s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.2s" fill="freeze"/>
       </rect>
-      <text x="180" y="54.0" text-anchor="middle" class="count">36</text>
-      <text x="180" y="141" text-anchor="middle" class="day-label">Wed</text>
+      <text x="176" y="45.0" text-anchor="middle" class="count">38</text>
+      <text x="176" y="119" text-anchor="middle" class="day-label">Wed</text>
     </g>
     
     <g>
-      <rect x="221" y="125" width="42" height="0" rx="5" fill="#0D1117" opacity="0.3">
+      <rect x="218" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
         <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="125" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
       </rect>
       
-      <text x="242" y="141" text-anchor="middle" class="day-label">Thu</text>
+      <text x="238" y="119" text-anchor="middle" class="day-label">Thu</text>
     </g>
     
     <g>
-      <rect x="283" y="125" width="42" height="0" rx="5" fill="#0D1117" opacity="0.3">
+      <rect x="280" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
         <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.4s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="125" dur="0.6s" begin="0.4s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.4s" fill="freeze"/>
       </rect>
       
-      <text x="304" y="141" text-anchor="middle" class="day-label">Fri</text>
+      <text x="300" y="119" text-anchor="middle" class="day-label">Fri</text>
     </g>
     
     <g>
-      <rect x="345" y="125" width="42" height="0" rx="5" fill="#0D1117" opacity="0.3">
+      <rect x="342" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
         <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.5s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="125" dur="0.6s" begin="0.5s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.5s" fill="freeze"/>
       </rect>
       
-      <text x="366" y="141" text-anchor="middle" class="day-label">Sat</text>
+      <text x="362" y="119" text-anchor="middle" class="day-label">Sat</text>
     </g>
     
     <g>
-      <rect x="407" y="125" width="42" height="0" rx="5" fill="#0D1117" opacity="0.3">
+      <rect x="404" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
         <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
-        <animate attributeName="y" from="125" to="125" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
       </rect>
       
-      <text x="428" y="141" text-anchor="middle" class="day-label">Sun</text>
+      <text x="424" y="119" text-anchor="middle" class="day-label">Sun</text>
     </g>
     
 
   </g>
 
-  <g transform="translate(0, 720)">
+  <g transform="translate(0, 582)">
     
-  <rect x="0" y="0" width="495" height="180" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="180" rx="10" class="border"/>
-  <text x="20" y="34" class="title">⏰ When I Code</text>
-  <text x="20" y="52" class="subtitle">Last 30 days activity</text>
+  <rect x="0" y="0" width="495" height="150" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="150" rx="10" class="border"/>
+  <text x="18" y="30" class="title">⏰ When I Code</text>
+  <text x="18" y="46" class="subtitle">Last 30 days activity</text>
   
     <g>
-      <rect x="25" y="70" width="62" height="65" rx="8" fill="#39D353" opacity="1.0"/>
-      <text x="56" y="92" text-anchor="middle" class="emoji">🔥</text>
-      <text x="56" y="110" text-anchor="middle" class="time-count">45</text>
-      <text x="56" y="150" text-anchor="middle" class="time-label">Night</text>
-      <text x="56" y="160" text-anchor="middle" class="time-label">(00-04)</text>
+      <rect x="22" y="60" width="62" height="58" rx="7" fill="#39D353" opacity="1.0"/>
+      <text x="53" y="78" text-anchor="middle" class="emoji">🔥</text>
+      <text x="53" y="94" text-anchor="middle" class="time-count">47</text>
+      <text x="53" y="128" text-anchor="middle" class="time-label">Night</text>
+      <text x="53" y="137" text-anchor="middle" class="time-label">(00-04)</text>
     </g>
     
     <g>
-      <rect x="100" y="70" width="62" height="65" rx="8" fill="#0D1117" opacity="0.3"/>
-      <text x="131" y="92" text-anchor="middle" class="emoji">💤</text>
-      <text x="131" y="110" text-anchor="middle" class="time-count">0</text>
-      <text x="131" y="150" text-anchor="middle" class="time-label">Dawn</text>
-      <text x="131" y="160" text-anchor="middle" class="time-label">(04-08)</text>
+      <rect x="97" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="128" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="128" y="94" text-anchor="middle" class="time-count">0</text>
+      <text x="128" y="128" text-anchor="middle" class="time-label">Dawn</text>
+      <text x="128" y="137" text-anchor="middle" class="time-label">(04-08)</text>
     </g>
     
     <g>
-      <rect x="175" y="70" width="62" height="65" rx="8" fill="#0D1117" opacity="0.3"/>
-      <text x="206" y="92" text-anchor="middle" class="emoji">💤</text>
-      <text x="206" y="110" text-anchor="middle" class="time-count">0</text>
-      <text x="206" y="150" text-anchor="middle" class="time-label">Morning</text>
-      <text x="206" y="160" text-anchor="middle" class="time-label">(08-12)</text>
+      <rect x="172" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="203" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="203" y="94" text-anchor="middle" class="time-count">0</text>
+      <text x="203" y="128" text-anchor="middle" class="time-label">Morning</text>
+      <text x="203" y="137" text-anchor="middle" class="time-label">(08-12)</text>
     </g>
     
     <g>
-      <rect x="250" y="70" width="62" height="65" rx="8" fill="#006D32" opacity="0.3466666666666667"/>
-      <text x="281" y="92" text-anchor="middle" class="emoji">✨</text>
-      <text x="281" y="110" text-anchor="middle" class="time-count">3</text>
-      <text x="281" y="150" text-anchor="middle" class="time-label">Afternoon</text>
-      <text x="281" y="160" text-anchor="middle" class="time-label">(12-16)</text>
+      <rect x="247" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.3446808510638298"/>
+      <text x="278" y="78" text-anchor="middle" class="emoji">✨</text>
+      <text x="278" y="94" text-anchor="middle" class="time-count">3</text>
+      <text x="278" y="128" text-anchor="middle" class="time-label">Afternoon</text>
+      <text x="278" y="137" text-anchor="middle" class="time-label">(12-16)</text>
     </g>
     
     <g>
-      <rect x="325" y="70" width="62" height="65" rx="8" fill="#006D32" opacity="0.31555555555555553"/>
-      <text x="356" y="92" text-anchor="middle" class="emoji">✨</text>
-      <text x="356" y="110" text-anchor="middle" class="time-count">1</text>
-      <text x="356" y="150" text-anchor="middle" class="time-label">Evening</text>
-      <text x="356" y="160" text-anchor="middle" class="time-label">(16-20)</text>
+      <rect x="322" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.3148936170212766"/>
+      <text x="353" y="78" text-anchor="middle" class="emoji">✨</text>
+      <text x="353" y="94" text-anchor="middle" class="time-count">1</text>
+      <text x="353" y="128" text-anchor="middle" class="time-label">Evening</text>
+      <text x="353" y="137" text-anchor="middle" class="time-label">(16-20)</text>
     </g>
     
     <g>
-      <rect x="400" y="70" width="62" height="65" rx="8" fill="#006D32" opacity="0.4711111111111111"/>
-      <text x="431" y="92" text-anchor="middle" class="emoji">✨</text>
-      <text x="431" y="110" text-anchor="middle" class="time-count">11</text>
-      <text x="431" y="150" text-anchor="middle" class="time-label">Night</text>
-      <text x="431" y="160" text-anchor="middle" class="time-label">(20-24)</text>
+      <rect x="397" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.46382978723404256"/>
+      <text x="428" y="78" text-anchor="middle" class="emoji">✨</text>
+      <text x="428" y="94" text-anchor="middle" class="time-count">11</text>
+      <text x="428" y="128" text-anchor="middle" class="time-label">Night</text>
+      <text x="428" y="137" text-anchor="middle" class="time-label">(20-24)</text>
     </g>
     
 
