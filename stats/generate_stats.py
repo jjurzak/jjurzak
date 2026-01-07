@@ -1,4 +1,6 @@
-import os, requests, json
+import os
+import requests
+import json
 from datetime import datetime, timedelta
 from collections import defaultdict, Counter
 
@@ -6,19 +8,29 @@ USERNAME = "jjurzak"
 HEADERS = {"Accept": "application/vnd.github+json"}
 
 def fetch(url):
-    r = requests.get(url, headers=HEADERS)
-    if r.status_code == 403:
+    """Fetch data from GitHub API"""
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=10)
+        if r.status_code == 403:
+            return None
+        return r.json()
+    except:
         return None
-    return r.json()
 
-# --- User stats (repos + followers) ---
+# ==================== DATA COLLECTION ====================
+
+print("📊 Fetching GitHub stats...")
+
+# User stats
 user = fetch(f"https://api.github.com/users/{USERNAME}") or {}
 repos = fetch(f"https://api.github.com/users/{USERNAME}/repos?per_page=100") or []
 
 public_repos = user.get("public_repos", 0)
 followers = user.get("followers", 0)
+bio = user.get("bio", "")
 
-# --- Language aggregation ---
+# Language aggregation
+print("📝 Processing languages...")
 lang_usage = defaultdict(int)
 for repo in repos:
     langs = fetch(repo["languages_url"]) or {}
@@ -27,95 +39,230 @@ for repo in repos:
 
 top_langs = sorted(lang_usage.items(), key=lambda x: x[1], reverse=True)[:6]
 
-# --- Weekly commits (past 7 days) ---
+# Weekly activity
+print("📈 Analyzing activity...")
 events = fetch(f"https://api.github.com/users/{USERNAME}/events?per_page=100") or []
 cutoff = datetime.utcnow() - timedelta(days=7)
+cutoff30 = datetime.utcnow() - timedelta(days=30)
 
 weekly = Counter()
 for evt in events:
     try:
         t = datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+        if t >= cutoff:
+            day = t.strftime("%a")
+            weekly[day] += 1
     except:
         continue
-    if t < cutoff: continue
-    day = t.strftime("%a")
-    weekly[day] += 1
 
-days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
-weekly_lines = "\n".join(
-    f'<text x="20" y="{60 + i*18}" class="text">{d}: {weekly.get(d,0)}</text>'
-    for i,d in enumerate(days)
-)
-
-# --- Commit streak (past 30 days)
-cutoff30 = datetime.utcnow() - timedelta(days=30)
-streak_events = [evt for evt in events if "created_at" in evt]
 streak = sum(
-    1 for evt in streak_events
-    if datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ") > cutoff30
+    1 for evt in events
+    if "created_at" in evt and
+    datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ") >= cutoff30
 )
 
-# --- Theme detection via ENV (dark default)
-MODE = os.getenv("THEME","dark")
-BG = "#FFFFFF" if MODE == "light" else "#0D1117"
-FG = "#1F2328" if MODE == "light" else "#C9D1D9"
-TITLE = "#0969DA" if MODE == "light" else "#58A6FF"
-DATE = "#57606A" if MODE == "light" else "#6E7681"
-BORDER = "#D0D7DE" if MODE == "light" else "#30363D"
+# ==================== COLOR THEME ====================
+
+MODE = os.getenv("THEME", "dark").lower()
+
+THEMES = {
+    "dark": {
+        "bg": "#0D1117",
+        "fg": "#C9D1D9",
+        "title": "#58A6FF",
+        "accent": "#1F6FEB",
+        "border": "#30363D",
+        "date": "#6E7681",
+        "graph_bar": "#1F6FEB",
+        "graph_bg": "#161B22",
+    },
+    "light": {
+        "bg": "#FFFFFF",
+        "fg": "#24292F",
+        "title": "#0969DA",
+        "accent": "#1F6FEB",
+        "border": "#D0D7DE",
+        "date": "#57606A",
+        "graph_bar": "#0969DA",
+        "graph_bg": "#F6F8FA",
+    }
+}
+
+COLORS = THEMES.get(MODE, THEMES["dark"])
+BG = COLORS["bg"]
+FG = COLORS["fg"]
+TITLE = COLORS["title"]
+ACCENT = COLORS["accent"]
+BORDER = COLORS["border"]
+DATE = COLORS["date"]
+GRAPH_BAR = COLORS["graph_bar"]
+GRAPH_BG = COLORS["graph_bg"]
 
 now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
 
-# === CARD 1: Overview ===
-overview = f"""
-<svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100%" height="100%" rx="10" fill="{BG}"/>
-  <rect x="2" y="2" width="416" height="156" rx="10" fill="none" stroke="{BORDER}" stroke-width="2"/>
-  <style>
-    .title {{ fill: {TITLE}; font-size: 18px; font-family: Consolas, monospace; font-weight: 600; }}
-    .text {{ fill: {FG}; font-size: 14px; font-family: Consolas, monospace; }}
-    .date {{ fill: {DATE}; font-size: 12px; font-family: Consolas, monospace; }}
-  </style>
-  <text x="20" y="35" class="title">GitHub Stats — {USERNAME}</text>
-  <text x="20" y="70" class="text">📁 Public repos: {public_repos}</text>
-  <text x="20" y="95" class="text">⭐ Followers: {followers}</text>
-  <text x="20" y="120" class="text">🔥 30-day activity: {streak} events</text>
-  <text x="20" y="145" class="date">Updated: {now}</text>
-</svg>
-"""
-open("stats/card.svg","w").write(overview)
+# ==================== SVG CARD 1: OVERVIEW ====================
 
-# === CARD 2: Top Languages ===
-height = 60 + len(top_langs)*18
-lang_lines = "\n".join(
-    f'<text x="20" y="{60 + i*18}" class="text">• {lang}: {round(bytes_used/1024)} KB</text>'
-    for i, (lang, bytes_used) in enumerate(top_langs)
-) or '<text x="20" y="60" class="text">No language data</text>'
+overview_svg = f"""<svg width="480" height="200" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .card {{ filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }}
+      .bg {{ fill: {BG}; }}
+      .border {{ fill: none; stroke: {BORDER}; stroke-width: 1.5; }}
+      .title {{ fill: {TITLE}; font-size: 20px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }}
+      .stat-label {{ fill: {FG}; font-size: 13px; font-weight: 500; font-family: 'Segoe UI', sans-serif; opacity: 0.8; }}
+      .stat-value {{ fill: {TITLE}; font-size: 24px; font-weight: 700; font-family: 'Monaco', monospace; }}
+      .footer {{ fill: {DATE}; font-size: 11px; font-family: 'Monaco', monospace; }}
+    </style>
+  </defs>
 
-langs_svg = f"""
-<svg width="420" height="{height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100%" height="100%" rx="10" fill="{BG}"/>
-  <rect x="2" y="2" width="416" height="{height-4}" rx="10" fill="none" stroke="{BORDER}" stroke-width="2"/>
-  <style>
-    .title {{ fill: {TITLE}; font-size: 18px; font-family: Consolas, monospace; font-weight: 600; }}
-    .text {{ fill: {FG}; font-size: 14px; font-family: Consolas, monospace; }}
-  </style>
-  <text x="20" y="35" class="title">Top Languages</text>
-  {lang_lines}
-</svg>
-"""
-open("stats/langs.svg","w").write(langs_svg)
+  <!-- Card background -->
+  <rect class="card" x="0" y="0" width="480" height="200" rx="12" class="bg"/>
+  <rect x="0" y="0" width="480" height="200" rx="12" class="border"/>
 
-# === CARD 3: Weekly commits ===
-weekly_svg = f"""
-<svg width="420" height="190" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100%" height="100%" rx="10" fill="{BG}"/>
-  <rect x="2" y="2" width="416" height="186" rx="10" fill="none" stroke="{BORDER}" stroke-width="2"/>
-  <style>
-    .title {{ fill: {TITLE}; font-size: 18px; font-family: Consolas, monospace; font-weight: 600; }}
-    .text {{ fill: {FG}; font-size: 14px; font-family: Consolas, monospace; }}
-  </style>
-  <text x="20" y="35" class="title">Weekly Activity</text>
-  {weekly_lines}
-</svg>
-"""
-open("stats/weekly.svg","w").write(weekly_svg)
+  <!-- Header -->
+  <text x="20" y="35" class="title">📊 GitHub Stats</text>
+  <text x="20" y="55" class="stat-label">@{USERNAME}</text>
+
+  <!-- Stats grid -->
+  <g>
+    <!-- Repos -->
+    <text x="30" y="95" class="stat-value">{public_repos}</text>
+    <text x="30" y="115" class="stat-label">Public Repos</text>
+
+    <!-- Followers -->
+    <text x="180" y="95" class="stat-value">{followers}</text>
+    <text x="180" y="115" class="stat-label">Followers</text>
+
+    <!-- 30-day activity -->
+    <text x="330" y="95" class="stat-value">{streak}</text>
+    <text x="330" y="115" class="stat-label">30-day Events</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="20" y="185" class="footer">↻ Updated: {now}</text>
+</svg>"""
+
+# ==================== SVG CARD 2: TOP LANGUAGES ====================
+
+# Build language bars
+lang_items = []
+max_bytes = max([b for _, b in top_langs], default=1)
+
+for i, (lang, bytes_used) in enumerate(top_langs):
+    percent = (bytes_used / max_bytes) * 100 if max_bytes > 0 else 0
+    bar_width = (percent / 100) * 340  # Max bar width
+
+    y_pos = 60 + i * 38
+
+    lang_items.append(f"""
+    <!-- {lang} -->
+    <text x="20" y="{y_pos + 5}" class="lang-name">{lang}</text>
+    <text x="20" y="{y_pos + 25}" class="lang-size">{round(bytes_used/1024)} KB</text>
+
+    <!-- Progress bar -->
+    <rect x="140" y="{y_pos - 8}" width="340" height="6" rx="3" fill="{GRAPH_BG}"/>
+    <rect x="140" y="{y_pos - 8}" width="{bar_width}" height="6" rx="3" fill="{GRAPH_BAR}"/>
+  """)
+
+lang_section = "\n".join(lang_items)
+height = 60 + len(top_langs) * 38 + 20
+
+langs_svg = f"""<svg width="480" height="{height}" viewBox="0 0 480 {height}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg {{ fill: {BG}; }}
+      .border {{ fill: none; stroke: {BORDER}; stroke-width: 1.5; }}
+      .title {{ fill: {TITLE}; font-size: 20px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }}
+      .lang-name {{ fill: {TITLE}; font-size: 14px; font-weight: 600; font-family: 'Monaco', monospace; }}
+      .lang-size {{ fill: {DATE}; font-size: 12px; font-family: 'Monaco', monospace; }}
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="480" height="{height}" rx="12" class="bg"/>
+  <rect x="0" y="0" width="480" height="{height}" rx="12" class="border"/>
+
+  <!-- Header -->
+  <text x="20" y="35" class="title">💻 Top Languages</text>
+
+  <!-- Language bars -->
+  {lang_section}
+</svg>"""
+
+# ==================== SVG CARD 3: WEEKLY ACTIVITY ====================
+
+days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+max_activity = max([weekly.get(d, 0) for d in days], default=1)
+
+activity_bars = []
+for i, day in enumerate(days):
+    count = weekly.get(day, 0)
+    bar_height = (count / max(max_activity, 1)) * 80 if max_activity > 0 else 0
+
+    x_pos = 30 + i * 60
+    y_base = 140
+
+    # Color intensity based on activity
+    if count == 0:
+        bar_color = GRAPH_BG
+    else:
+        opacity = 0.3 + (count / max(max_activity, 1)) * 0.7
+        # Simple opacity calculation
+        bar_color = GRAPH_BAR
+
+    activity_bars.append(f"""
+    <!-- {day} -->
+    <text x="{x_pos + 15}" y="165" class="day-label">{day}</text>
+    <rect x="{x_pos}" y="{y_base - bar_height}" width="40" height="{bar_height}" rx="4" 
+          fill="{bar_color}" opacity="{0.3 + (count / max(max_activity, 1)) * 0.7 if max_activity > 0 else 0.2}"/>
+    <text x="{x_pos + 8}" y="{y_base - bar_height - 8}" class="count">{count}</text>
+  """)
+
+activity_section = "\n".join(activity_bars)
+
+weekly_svg = f"""<svg width="480" height="200" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg {{ fill: {BG}; }}
+      .border {{ fill: none; stroke: {BORDER}; stroke-width: 1.5; }}
+      .title {{ fill: {TITLE}; font-size: 20px; font-weight: 700; font-family: 'Segoe UI', sans-serif; }}
+      .day-label {{ fill: {DATE}; font-size: 12px; font-weight: 500; font-family: 'Monaco', monospace; text-anchor: middle; }}
+      .count {{ fill: {TITLE}; font-size: 11px; font-weight: 600; font-family: 'Monaco', monospace; text-anchor: middle; }}
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="480" height="200" rx="12" class="bg"/>
+  <rect x="0" y="0" width="480" height="200" rx="12" class="border"/>
+
+  <!-- Header -->
+  <text x="20" y="35" class="title">📅 Weekly Activity</text>
+
+  <!-- Activity bars -->
+  {activity_section}
+</svg>"""
+
+# ==================== SAVE SVG FILES ====================
+
+print("💾 Saving SVG files...")
+
+os.makedirs("stats", exist_ok=True)
+
+with open("stats/overview.svg", "w") as f:
+    f.write(overview_svg)
+    print("✅ stats/overview.svg")
+
+with open("stats/languages.svg", "w") as f:
+    f.write(langs_svg)
+    print("✅ stats/languages.svg")
+
+with open("stats/weekly.svg", "w") as f:
+    f.write(weekly_svg)
+    print("✅ stats/weekly.svg")
+
+print("\n✨ Done! Use in README:")
+print("""
+![GitHub Stats](stats/overview.svg)
+![Top Languages](stats/languages.svg)
+![Weekly Activity](stats/weekly.svg)
+""")
