@@ -27,17 +27,37 @@ repos = fetch(f"https://api.github.com/users/{USERNAME}/repos?per_page=100") or 
 
 public_repos = user.get("public_repos", 0)
 followers = user.get("followers", 0)
-bio = user.get("bio", "")
+following = user.get("following", 0)
+created_at = user.get("created_at", "")
 
-# Language aggregation
+# Calculate account age
+if created_at:
+    account_created = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ")
+    account_age_days = (datetime.utcnow() - account_created).days
+else:
+    account_age_days = 0
+
+# Repo stats
+total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
+total_forks = sum(repo.get("forks_count", 0) for repo in repos)
+
+# Top repos by stars
+top_repos = sorted(
+    [r for r in repos if not r.get("fork", False)],
+    key=lambda x: x.get("stargazers_count", 0),
+    reverse=True
+)[:3]
+
+# Language aggregation (excluding Jupyter)
 print("📝 Processing languages...")
 lang_usage = defaultdict(int)
 for repo in repos:
     langs = fetch(repo["languages_url"]) or {}
     for lang, bytes_used in langs.items():
-        lang_usage[lang] += bytes_used
+        if lang != "Jupyter Notebook":  # Skip Jupyter
+            lang_usage[lang] += bytes_used
 
-top_langs = sorted(lang_usage.items(), key=lambda x: x[1], reverse=True)[:6]
+top_langs = sorted(lang_usage.items(), key=lambda x: x[1], reverse=True)[:5]
 
 # Weekly activity
 print("📈 Analyzing activity...")
@@ -46,12 +66,16 @@ cutoff = datetime.utcnow() - timedelta(days=7)
 cutoff30 = datetime.utcnow() - timedelta(days=30)
 
 weekly = Counter()
+commit_hours = Counter()
+
 for evt in events:
     try:
         t = datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ")
         if t >= cutoff:
             day = t.strftime("%a")
             weekly[day] += 1
+        if t >= cutoff30:
+            commit_hours[t.hour] += 1
     except:
         continue
 
@@ -112,14 +136,12 @@ LANG_COLORS = {
     "PHP": "#4F5D95",
     "Swift": "#F05138",
     "Kotlin": "#A97BFF",
-    "Jupyter Notebook": "#DA5B0B",
     "CSS": "#563D7C",
     "HTML": "#E34C26",
     "Shell": "#89E051",
     "R": "#198CE7",
     "Scala": "#C22D40",
     "Dart": "#00B4AB",
-    "Answer Set Programming": "#4DB8A3",
 }
 
 def get_lang_color(lang):
@@ -185,45 +207,47 @@ overview_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="ht
   <text x="24" y="180" class="footer">↻ Updated {now}</text>
 </svg>"""
 
-# ==================== SVG CARD 2: TOP LANGUAGES ====================
+# ==================== SVG CARD 2: TOP REPOS ====================
 
-lang_items = []
-total_bytes = sum(b for _, b in top_langs)
-
+repo_items = []
 y_start = 75
-for i, (lang, bytes_used) in enumerate(top_langs):
-    percent = (bytes_used / total_bytes * 100) if total_bytes > 0 else 0
-    bar_width = (percent / 100) * 300
-    
-    y_pos = y_start + i * 45
-    color = get_lang_color(lang)
-    
-    # Format size
-    if bytes_used >= 1024 * 1024:
-        size_str = f"{round(bytes_used / (1024 * 1024), 1)} MB"
-    else:
-        size_str = f"{round(bytes_used / 1024)} KB"
 
-    lang_items.append(f"""
-    <!-- {lang} -->
+for i, repo in enumerate(top_repos[:3]):
+    name = repo.get("name", "")
+    desc = repo.get("description", "")
+    stars = repo.get("stargazers_count", 0)
+    forks = repo.get("forks_count", 0)
+    lang = repo.get("language", "Code")
+    
+    # Truncate description
+    if desc and len(desc) > 45:
+        desc = desc[:42] + "..."
+    elif not desc:
+        desc = "No description"
+    
+    y_pos = y_start + i * 70
+    lang_color = get_lang_color(lang)
+    
+    repo_items.append(f"""
+    <!-- {name} -->
     <g opacity="0.95">
-      <text x="24" y="{y_pos}" class="lang-name">{lang}</text>
-      <text x="24" y="{y_pos + 18}" class="lang-percent">{percent:.1f}%</text>
-      <text x="455" y="{y_pos + 18}" text-anchor="end" class="lang-size">{size_str}</text>
+      <text x="24" y="{y_pos}" class="repo-name">{name}</text>
+      <text x="24" y="{y_pos + 20}" class="repo-desc">{desc}</text>
       
-      <!-- Progress bar background -->
-      <rect x="130" y="{y_pos + 5}" width="300" height="8" rx="4" fill="{COLORS['graph_bg']}" opacity="0.3"/>
-      <!-- Progress bar -->
-      <rect x="130" y="{y_pos + 5}" width="{bar_width}" height="8" rx="4" fill="{color}">
-        <animate attributeName="width" from="0" to="{bar_width}" dur="0.8s" fill="freeze"/>
-      </rect>
+      <g transform="translate(24, {y_pos + 35})">
+        <circle cx="5" cy="0" r="5" fill="{lang_color}"/>
+        <text x="15" y="4" class="repo-lang">{lang}</text>
+        
+        <text x="120" y="4" class="repo-stat">⭐ {stars}</text>
+        <text x="180" y="4" class="repo-stat">🔱 {forks}</text>
+      </g>
     </g>
   """)
 
-height = y_start + len(top_langs) * 45 + 25
-lang_section = "\n".join(lang_items)
+height = y_start + len(top_repos) * 70 + 25
+repo_section = "\n".join(repo_items)
 
-langs_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xmlns="http://www.w3.org/2000/svg">
+repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
@@ -231,9 +255,10 @@ langs_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
       .bg {{ fill: {COLORS['card_bg']}; }}
       .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
       .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .lang-name {{ fill: {COLORS['fg']}; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; }}
-      .lang-percent {{ fill: {COLORS['title']}; font-size: 13px; font-weight: 700; font-family: 'Inter', monospace; }}
-      .lang-size {{ fill: {COLORS['date']}; font-size: 11px; font-family: 'Inter', monospace; }}
+      .repo-name {{ fill: {COLORS['title']}; font-size: 16px; font-weight: 600; font-family: 'Inter', monospace; }}
+      .repo-desc {{ fill: {COLORS['date']}; font-size: 12px; font-family: 'Inter', sans-serif; }}
+      .repo-lang {{ fill: {COLORS['fg']}; font-size: 12px; font-family: 'Inter', sans-serif; }}
+      .repo-stat {{ fill: {COLORS['date']}; font-size: 11px; font-family: 'Inter', monospace; }}
     </style>
   </defs>
 
@@ -242,13 +267,13 @@ langs_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
   <rect x="0" y="0" width="495" height="{height}" rx="10" class="border"/>
 
   <!-- Header -->
-  <text x="24" y="38" class="title">💻 Top Languages</text>
+  <text x="24" y="38" class="title">⭐ Top Repositories</text>
 
-  <!-- Language bars -->
-  {lang_section}
+  <!-- Repos -->
+  {repo_section}
 </svg>"""
 
-# ==================== SVG CARD 3: WEEKLY ACTIVITY ====================
+# ==================== SVG CARD 3: WEEKLY ACTIVITY (FIXED) ====================
 
 days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 max_activity = max([weekly.get(d, 0) for d in days_short], default=1)
@@ -259,10 +284,11 @@ start_x = 40
 
 for i, day in enumerate(days_short):
     count = weekly.get(day, 0)
-    bar_height = max((count / max(max_activity, 1)) * 90, 3) if count > 0 else 0
+    # Fixed: max bar height is now 70px instead of 90px
+    bar_height = max((count / max(max_activity, 1)) * 70, 3) if count > 0 else 0
     
     x_pos = start_x + i * bar_spacing
-    y_base = 145
+    y_base = 135  # Moved up from 145
     
     # Color intensity
     if count == 0:
@@ -280,8 +306,8 @@ for i, day in enumerate(days_short):
         <animate attributeName="height" from="0" to="{bar_height}" dur="0.6s" begin="{i * 0.1}s" fill="freeze"/>
         <animate attributeName="y" from="{y_base}" to="{y_base - bar_height}" dur="0.6s" begin="{i * 0.1}s" fill="freeze"/>
       </rect>
-      {f'<text x="{x_pos + 22.5}" y="{y_base - bar_height - 10}" text-anchor="middle" class="count">{count}</text>' if count > 0 else ''}
-      <text x="{x_pos + 22.5}" y="{y_base + 20}" text-anchor="middle" class="day-label">{day}</text>
+      {f'<text x="{x_pos + 22.5}" y="{y_base - bar_height - 8}" text-anchor="middle" class="count">{count}</text>' if count > 0 else ''}
+      <text x="{x_pos + 22.5}" y="{y_base + 18}" text-anchor="middle" class="day-label">{day}</text>
     </g>
   """)
 
@@ -311,10 +337,89 @@ weekly_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http
   <text x="24" y="58" class="subtitle">Last 7 days</text>
 
   <!-- Baseline -->
-  <line x1="40" y1="145" x2="455" y2="145" class="baseline"/>
+  <line x1="40" y1="135" x2="455" y2="135" class="baseline"/>
 
   <!-- Activity bars -->
   {activity_section}
+</svg>"""
+
+# ==================== SVG CARD 4: COMMIT TIME HEATMAP ====================
+
+# Group hours into 6 blocks of 4 hours each
+time_blocks = {
+    "Night\n(00-04)": sum(commit_hours.get(h, 0) for h in range(0, 4)),
+    "Dawn\n(04-08)": sum(commit_hours.get(h, 0) for h in range(4, 8)),
+    "Morning\n(08-12)": sum(commit_hours.get(h, 0) for h in range(8, 12)),
+    "Afternoon\n(12-16)": sum(commit_hours.get(h, 0) for h in range(12, 16)),
+    "Evening\n(16-20)": sum(commit_hours.get(h, 0) for h in range(16, 20)),
+    "Night\n(20-24)": sum(commit_hours.get(h, 0) for h in range(20, 24)),
+}
+
+max_commits = max(time_blocks.values(), default=1)
+
+time_items = []
+block_width = 65
+start_x = 30
+
+for i, (period, count) in enumerate(time_blocks.items()):
+    x_pos = start_x + i * block_width
+    intensity = (count / max(max_commits, 1)) if max_commits > 0 else 0
+    
+    # Color based on intensity
+    if intensity > 0.7:
+        color = "#39D353"
+        emoji = "🔥"
+    elif intensity > 0.4:
+        color = "#26A641"
+        emoji = "⚡"
+    elif intensity > 0:
+        color = "#006D32"
+        emoji = "✨"
+    else:
+        color = COLORS['graph_bg']
+        emoji = "💤"
+        
+    period_lines = period.split("\n")
+    
+    time_items.append(f"""
+    <!-- {period} -->
+    <g>
+      <rect x="{x_pos}" y="75" width="55" height="70" rx="8" 
+            fill="{color}" opacity="{0.3 + intensity * 0.7}"/>
+      <text x="{x_pos + 27.5}" y="100" text-anchor="middle" class="emoji">{emoji}</text>
+      <text x="{x_pos + 27.5}" y="120" text-anchor="middle" class="time-count">{count}</text>
+      <text x="{x_pos + 27.5}" y="165" text-anchor="middle" class="time-label">{period_lines[0]}</text>
+      <text x="{x_pos + 27.5}" y="178" text-anchor="middle" class="time-label">{period_lines[1]}</text>
+    </g>
+  """)
+
+time_section = "\n".join(time_items)
+
+time_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      
+      .bg {{ fill: {COLORS['card_bg']}; }}
+      .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
+      .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
+      .subtitle {{ fill: {COLORS['date']}; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }}
+      .emoji {{ font-size: 20px; }}
+      .time-count {{ fill: {COLORS['title']}; font-size: 16px; font-weight: 700; font-family: 'Inter', monospace; }}
+      .time-label {{ fill: {COLORS['date']}; font-size: 10px; font-family: 'Inter', sans-serif; }}
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+
+  <!-- Header -->
+  <text x="24" y="38" class="title">⏰ When I Code</text>
+  <text x="24" y="58" class="subtitle">Last 30 days activity</text>
+
+  <!-- Time blocks -->
+  {time_section}
 </svg>"""
 
 # ==================== SAVE SVG FILES ====================
@@ -327,19 +432,24 @@ with open("stats/overview.svg", "w") as f:
     f.write(overview_svg)
     print("✅ stats/overview.svg")
 
-with open("stats/languages.svg", "w") as f:
-    f.write(langs_svg)
-    print("✅ stats/languages.svg")
+with open("stats/repos.svg", "w") as f:
+    f.write(repos_svg)
+    print("✅ stats/repos.svg (NEW - top starred repos)")
 
 with open("stats/weekly.svg", "w") as f:
     f.write(weekly_svg)
-    print("✅ stats/weekly.svg")
+    print("✅ stats/weekly.svg (FIXED - bars stay in frame)")
+
+with open("stats/time.svg", "w") as f:
+    f.write(time_svg)
+    print("✅ stats/time.svg (NEW - coding time distribution)")
 
 print("\n✨ Done! Use in README:")
 print("""
 <p align="center">
   <img src="stats/overview.svg" alt="GitHub Stats" />
-  <img src="stats/languages.svg" alt="Top Languages" />
+  <img src="stats/repos.svg" alt="Top Repositories" />
   <img src="stats/weekly.svg" alt="Weekly Activity" />
+  <img src="stats/time.svg" alt="Coding Time" />
 </p>
 """)
