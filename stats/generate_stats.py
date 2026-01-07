@@ -135,7 +135,7 @@ overview_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="ht
     </linearGradient>
     
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
       
       .card {{ filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); }}
       .bg {{ fill: {COLORS['card_bg']}; }}
@@ -226,7 +226,7 @@ lang_section = "\n".join(lang_items)
 langs_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
       
       .bg {{ fill: {COLORS['card_bg']}; }}
       .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
@@ -290,7 +290,7 @@ activity_section = "\n".join(activity_bars)
 weekly_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
       
       .bg {{ fill: {COLORS['card_bg']}; }}
       .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
