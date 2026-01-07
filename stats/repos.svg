@@ -1,0 +1,69 @@
+<svg width="495" height="310" viewBox="0 0 495 310" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      
+      .bg { fill: #161B22; }
+      .border { fill: none; stroke: #30363D; stroke-width: 1; }
+      .title { fill: #C9D1D9; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }
+      .repo-name { fill: #58A6FF; font-size: 16px; font-weight: 600; font-family: 'Inter', monospace; }
+      .repo-desc { fill: #8B949E; font-size: 12px; font-family: 'Inter', sans-serif; }
+      .repo-lang { fill: #C9D1D9; font-size: 12px; font-family: 'Inter', sans-serif; }
+      .repo-stat { fill: #8B949E; font-size: 11px; font-family: 'Inter', monospace; }
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="495" height="310" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="310" rx="10" class="border"/>
+
+  <!-- Header -->
+  <text x="24" y="38" class="title">⭐ Top Repositories</text>
+
+  <!-- Repos -->
+  
+    <!-- Blockchain -->
+    <g opacity="0.95">
+      <text x="24" y="75" class="repo-name">Blockchain</text>
+      <text x="24" y="95" class="repo-desc">No description</text>
+      
+      <g transform="translate(24, 110)">
+        <circle cx="5" cy="0" r="5" fill="#3572A5"/>
+        <text x="15" y="4" class="repo-lang">Python</text>
+        
+        <text x="120" y="4" class="repo-stat">⭐ 0</text>
+        <text x="180" y="4" class="repo-stat">🔱 0</text>
+      </g>
+    </g>
+  
+
+    <!-- CombinatorialOptimization -->
+    <g opacity="0.95">
+      <text x="24" y="145" class="repo-name">CombinatorialOptimization</text>
+      <text x="24" y="165" class="repo-desc">Task shuffles will be posted in this repos...</text>
+      
+      <g transform="translate(24, 180)">
+        <circle cx="5" cy="0" r="5" fill="#3572A5"/>
+        <text x="15" y="4" class="repo-lang">Python</text>
+        
+        <text x="120" y="4" class="repo-stat">⭐ 0</text>
+        <text x="180" y="4" class="repo-stat">🔱 0</text>
+      </g>
+    </g>
+  
+
+    <!-- CrowdCounter -->
+    <g opacity="0.95">
+      <text x="24" y="215" class="repo-name">CrowdCounter</text>
+      <text x="24" y="235" class="repo-desc">No description</text>
+      
+      <g transform="translate(24, 250)">
+        <circle cx="5" cy="0" r="5" fill="#3572A5"/>
+        <text x="15" y="4" class="repo-lang">Python</text>
+        
+        <text x="120" y="4" class="repo-stat">⭐ 0</text>
+        <text x="180" y="4" class="repo-stat">🔱 0</text>
+      </g>
+    </g>
+  
+</svg>

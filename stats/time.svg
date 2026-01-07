@@ -1,0 +1,97 @@
+<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      
+      .bg { fill: #161B22; }
+      .border { fill: none; stroke: #30363D; stroke-width: 1; }
+      .title { fill: #C9D1D9; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }
+      .subtitle { fill: #8B949E; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }
+      .emoji { font-size: 20px; }
+      .time-count { fill: #58A6FF; font-size: 16px; font-weight: 700; font-family: 'Inter', monospace; }
+      .time-label { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+
+  <!-- Header -->
+  <text x="24" y="38" class="title">⏰ When I Code</text>
+  <text x="24" y="58" class="subtitle">Last 30 days activity</text>
+
+  <!-- Time blocks -->
+  
+    <!-- Night
+(00-04) -->
+    <g>
+      <rect x="30" y="75" width="55" height="70" rx="8" 
+            fill="#39D353" opacity="1.0"/>
+      <text x="57.5" y="100" text-anchor="middle" class="emoji">🔥</text>
+      <text x="57.5" y="120" text-anchor="middle" class="time-count">32</text>
+      <text x="57.5" y="165" text-anchor="middle" class="time-label">Night</text>
+      <text x="57.5" y="178" text-anchor="middle" class="time-label">(00-04)</text>
+    </g>
+  
+
+    <!-- Dawn
+(04-08) -->
+    <g>
+      <rect x="95" y="75" width="55" height="70" rx="8" 
+            fill="#0D1117" opacity="0.3"/>
+      <text x="122.5" y="100" text-anchor="middle" class="emoji">💤</text>
+      <text x="122.5" y="120" text-anchor="middle" class="time-count">0</text>
+      <text x="122.5" y="165" text-anchor="middle" class="time-label">Dawn</text>
+      <text x="122.5" y="178" text-anchor="middle" class="time-label">(04-08)</text>
+    </g>
+  
+
+    <!-- Morning
+(08-12) -->
+    <g>
+      <rect x="160" y="75" width="55" height="70" rx="8" 
+            fill="#0D1117" opacity="0.3"/>
+      <text x="187.5" y="100" text-anchor="middle" class="emoji">💤</text>
+      <text x="187.5" y="120" text-anchor="middle" class="time-count">0</text>
+      <text x="187.5" y="165" text-anchor="middle" class="time-label">Morning</text>
+      <text x="187.5" y="178" text-anchor="middle" class="time-label">(08-12)</text>
+    </g>
+  
+
+    <!-- Afternoon
+(12-16) -->
+    <g>
+      <rect x="225" y="75" width="55" height="70" rx="8" 
+            fill="#006D32" opacity="0.365625"/>
+      <text x="252.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="252.5" y="120" text-anchor="middle" class="time-count">3</text>
+      <text x="252.5" y="165" text-anchor="middle" class="time-label">Afternoon</text>
+      <text x="252.5" y="178" text-anchor="middle" class="time-label">(12-16)</text>
+    </g>
+  
+
+    <!-- Evening
+(16-20) -->
+    <g>
+      <rect x="290" y="75" width="55" height="70" rx="8" 
+            fill="#006D32" opacity="0.32187499999999997"/>
+      <text x="317.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="317.5" y="120" text-anchor="middle" class="time-count">1</text>
+      <text x="317.5" y="165" text-anchor="middle" class="time-label">Evening</text>
+      <text x="317.5" y="178" text-anchor="middle" class="time-label">(16-20)</text>
+    </g>
+  
+
+    <!-- Night
+(20-24) -->
+    <g>
+      <rect x="355" y="75" width="55" height="70" rx="8" 
+            fill="#006D32" opacity="0.5406249999999999"/>
+      <text x="382.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="382.5" y="120" text-anchor="middle" class="time-count">11</text>
+      <text x="382.5" y="165" text-anchor="middle" class="time-label">Night</text>
+      <text x="382.5" y="178" text-anchor="middle" class="time-label">(20-24)</text>
+    </g>
+  
+</svg>
