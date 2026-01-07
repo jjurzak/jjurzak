@@ -1,13 +1,15 @@
 
-<svg width="420" height="150" xmlns="http://www.w3.org/2000/svg">
-<rect width="100%" height="100%" fill="#0D1117"/>
-<style>
-    .title { fill: #58A6FF; font-size: 18px; font-family: Arial, sans-serif; }
-    .label { fill: #C9D1D9; font-size: 14px; font-family: Arial, sans-serif; }
-</style>
-
-<text x="20" y="35" class="title">GitHub Stats — jjurzak</text>
-<text x="20" y="70" class="label">📁 Public repos: 14</text>
-<text x="20" y="95" class="label">⭐ Followers: 0</text>
-<text x="20" y="120" class="label">Updated: 2026-01-07 00:18 UTC</text>
+<svg width="420" height="160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" rx="10" fill="#0D1117"/>
+  <rect x="2" y="2" width="416" height="156" rx="10" fill="none" stroke="#30363D" stroke-width="2"/>
+  <style>
+    .title { fill: #58A6FF; font-size: 18px; font-family: Consolas, monospace; font-weight: 600; }
+    .text { fill: #C9D1D9; font-size: 14px; font-family: Consolas, monospace; }
+    .date { fill: #6E7681; font-size: 12px; font-family: Consolas, monospace; }
+  </style>
+  <text x="20" y="35" class="title">GitHub Stats — jjurzak</text>
+  <text x="20" y="70" class="text">📁 Public repos: 14</text>
+  <text x="20" y="95" class="text">⭐ Followers: 0</text>
+  <text x="20" y="120" class="text">🔥 30-day activity: 32 events</text>
+  <text x="20" y="145" class="date">Updated: 2026-01-07 00:26 UTC</text>
 </svg>
