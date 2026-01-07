@@ -27,15 +27,6 @@ repos = fetch(f"https://api.github.com/users/{USERNAME}/repos?per_page=100") or 
 
 public_repos = user.get("public_repos", 0)
 followers = user.get("followers", 0)
-following = user.get("following", 0)
-created_at = user.get("created_at", "")
-
-# Calculate account age
-if created_at:
-    account_created = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%SZ")
-    account_age_days = (datetime.utcnow() - account_created).days
-else:
-    account_age_days = 0
 
 # Top repos by commits in last 6 months (excluding jjurzak repo)
 print("🔍 Analyzing repo contributions (last 6 months)...")
@@ -55,28 +46,14 @@ for repo in repos:
     commits = fetch(commits_url)
     
     commit_count = 0
-    weekly_commits = [0] * 26  # 26 weeks = ~6 months
     
     if commits and isinstance(commits, list):
         commit_count = len(commits)
-        
-        # Group commits by week
-        for commit in commits:
-            try:
-                commit_date = commit.get("commit", {}).get("author", {}).get("date", "")
-                if commit_date:
-                    t = datetime.strptime(commit_date, "%Y-%m-%dT%H:%M:%SZ")
-                    weeks_ago = (datetime.utcnow() - t).days // 7
-                    if 0 <= weeks_ago < 26:
-                        weekly_commits[25 - weeks_ago] += 1
-            except:
-                continue
     
     if commit_count > 0:
         repo_stats.append({
             "repo": repo,
-            "commits": commit_count,
-            "weekly": weekly_commits
+            "commits": commit_count
         })
         print(f"    ✓ {commit_count} commits")
     else:
@@ -85,17 +62,6 @@ for repo in repos:
 # Sort by commits
 top_repos = sorted(repo_stats, key=lambda x: x["commits"], reverse=True)[:3]
 print(f"\n📊 Found {len(repo_stats)} repos with commits, showing top {len(top_repos)}")
-
-# Language aggregation (excluding Jupyter)
-print("📝 Processing languages...")
-lang_usage = defaultdict(int)
-for repo in repos:
-    langs = fetch(repo["languages_url"]) or {}
-    for lang, bytes_used in langs.items():
-        if lang != "Jupyter Notebook":  # Skip Jupyter
-            lang_usage[lang] += bytes_used
-
-top_langs = sorted(lang_usage.items(), key=lambda x: x[1], reverse=True)[:5]
 
 # Weekly activity
 print("📈 Analyzing activity...")
@@ -185,362 +151,225 @@ LANG_COLORS = {
 def get_lang_color(lang):
     return LANG_COLORS.get(lang, COLORS["accent"])
 
-# ==================== SVG CARD 1: OVERVIEW ====================
+# ==================== BUILD DASHBOARD SVG ====================
 
-overview_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:{COLORS['gradient_start']};stop-opacity:1" />
-      <stop offset="100%" style="stop-color:{COLORS['gradient_end']};stop-opacity:1" />
-    </linearGradient>
-    
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
-      
-      .card {{ filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25)); }}
-      .bg {{ fill: {COLORS['card_bg']}; }}
-      .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
-      .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .username {{ fill: {COLORS['date']}; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; }}
-      .stat-label {{ fill: {COLORS['date']}; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }}
-      .stat-value {{ fill: {COLORS['title']}; font-size: 32px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .footer {{ fill: {COLORS['date']}; font-size: 10px; font-family: 'Inter', sans-serif; }}
-      .icon-circle {{ fill: url(#grad1); opacity: 0.15; }}
-      .divider {{ stroke: {COLORS['border']}; stroke-width: 1; opacity: 0.5; }}
-    </style>
-  </defs>
-
-  <!-- Card background -->
-  <rect class="card bg" x="0" y="0" width="495" height="195" rx="10"/>
-  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
-  
-  <!-- Decorative circles -->
-  <circle class="icon-circle" cx="450" cy="40" r="60"/>
-  <circle class="icon-circle" cx="40" cy="160" r="40"/>
-
-  <!-- Header -->
-  <text x="24" y="38" class="title">GitHub Stats</text>
-  <text x="24" y="58" class="username">@{USERNAME}</text>
-
-  <!-- Dividers -->
-  <line x1="165" y1="85" x2="165" y2="150" class="divider"/>
-  <line x1="330" y1="85" x2="330" y2="150" class="divider"/>
-
-  <!-- Stats grid -->
-  <g>
-    <!-- Public Repos -->
-    <text x="82" y="125" text-anchor="middle" class="stat-value">{public_repos}</text>
-    <text x="82" y="145" text-anchor="middle" class="stat-label">Repositories</text>
-
-    <!-- Followers -->
-    <text x="247" y="125" text-anchor="middle" class="stat-value">{followers}</text>
-    <text x="247" y="145" text-anchor="middle" class="stat-label">Followers</text>
-
-    <!-- 30-day activity -->
-    <text x="412" y="125" text-anchor="middle" class="stat-value">{streak}</text>
-    <text x="412" y="145" text-anchor="middle" class="stat-label">Events (30d)</text>
-  </g>
-
-  <!-- Footer -->
-  <text x="24" y="180" class="footer">↻ Updated {now}</text>
-</svg>"""
-
-# ==================== SVG CARD 2: TOP REPOS ====================
-
+# Top repos section
 repo_items = []
-y_start = 75
-
-if not top_repos:
-    # Fallback message if no repos found
+for i, item in enumerate(top_repos[:3]):
+    repo = item["repo"]
+    commits = item["commits"]
+    
+    name = repo.get("name", "")
+    desc = repo.get("description", "")
+    lang = repo.get("language", "None")
+    
+    # Truncate description
+    if desc and len(desc) > 38:
+        desc = desc[:35] + "..."
+    elif not desc:
+        desc = "No description"
+    
+    y_pos = 260 + i * 75
+    lang_color = get_lang_color(lang)
+    
+    # Language icon
+    lang_icon = "🐍" if lang == "Python" else "📄"
+    
     repo_items.append(f"""
-    <g opacity="0.95">
-      <text x="247" y="130" text-anchor="middle" class="repo-desc">No contribution data available</text>
-      <text x="247" y="150" text-anchor="middle" class="repo-lang">Try running the script again or check API rate limits</text>
-    </g>
-    """)
-else:
-    for i, item in enumerate(top_repos[:3]):
-        repo = item["repo"]
-        commits = item["commits"]
-        weekly_data = item["weekly"]
-        
-        name = repo.get("name", "")
-        desc = repo.get("description", "")
-        lang = repo.get("language", "Code")
-        
-        # Truncate description
-        if desc and len(desc) > 40:
-            desc = desc[:37] + "..."
-        elif not desc:
-            desc = "No description"
-        
-        y_pos = y_start + i * 80
-        lang_color = get_lang_color(lang)
-        
-        # Generate contribution-style line chart (like GitHub)
-        max_weekly = max(weekly_data) if weekly_data and max(weekly_data) > 0 else 1
-        chart_width = 240
-        chart_height = 30
-        chart_x = 225
-        chart_y = y_pos + 5
-        
-        # Create smooth path points
-        points = []
-        for j, count in enumerate(weekly_data):
-            x = chart_x + (j / max(len(weekly_data) - 1, 1)) * chart_width
-            # Normalize height - fuller bars like GitHub
-            normalized = (count / max_weekly) if max_weekly > 0 else 0
-            y = chart_y + chart_height - (normalized * chart_height * 0.8)  # 80% max height
-            points.append((x, y))
-        
-        # Create area fill path (like GitHub contribution graph)
-        area_path = f"M {chart_x},{chart_y + chart_height} "
-        for x, y in points:
-            area_path += f"L {x},{y} "
-        area_path += f"L {chart_x + chart_width},{chart_y + chart_height} Z"
-        
-        # Create line path
-        line_path = " ".join([f"{x},{y}" for x, y in points])
-        
-        repo_items.append(f"""
     <!-- {name} -->
     <g opacity="0.95">
-      <text x="24" y="{y_pos}" class="repo-name">{name}</text>
-      <text x="24" y="{y_pos + 18}" class="repo-desc">{desc}</text>
-      
-      <g transform="translate(24, {y_pos + 28})">
-        <circle cx="5" cy="0" r="5" fill="{lang_color}"/>
-        <text x="15" y="4" class="repo-lang">{lang}</text>
-        <text x="100" y="4" class="repo-stat">📝 {commits} commits</text>
-      </g>
-      
-      <!-- Contribution Graph (GitHub style) -->
-      <g opacity="0.9">
-        <!-- Area fill with gradient -->
-        <defs>
-          <linearGradient id="areaGrad{i}" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:{lang_color};stop-opacity:0.4" />
-            <stop offset="100%" style="stop-color:{lang_color};stop-opacity:0.05" />
-          </linearGradient>
-        </defs>
-        <path d="{area_path}" fill="url(#areaGrad{i})">
-          <animate attributeName="opacity" from="0" to="1" dur="0.8s" fill="freeze"/>
-        </path>
-        
-        <!-- Line -->
-        <polyline points="{line_path}" fill="none" stroke="{lang_color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <animate attributeName="stroke-dasharray" from="0,1000" to="1000,0" dur="1.2s" fill="freeze"/>
-        </polyline>
-      </g>
+      <rect x="30" y="{y_pos - 15}" width="360" height="65" rx="8" fill="{COLORS['card_bg']}"/>
+      <text x="45" y="{y_pos + 5}" class="repo-name">{name}</text>
+      <text x="45" y="{y_pos + 25}" class="repo-desc">{desc}</text>
+      <circle cx="50" cy="{y_pos + 42}" r="4" fill="{lang_color}"/>
+      <text x="60" y="{y_pos + 46}" class="repo-lang">{lang}</text>
+      <text x="180" y="{y_pos + 46}" class="repo-stat">📝 {commits} commits</text>
     </g>
   """)
 
-height = y_start + max(len(top_repos) * 80, 120) + 25
-repo_section = "\n".join(repo_items)
+repo_section = "\n".join(repo_items) if repo_items else """
+    <text x="210" y="320" text-anchor="middle" class="repo-desc">No contributions in last 6 months</text>
+"""
 
-repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
-      
-      .bg {{ fill: {COLORS['card_bg']}; }}
-      .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
-      .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .repo-name {{ fill: {COLORS['title']}; font-size: 16px; font-weight: 600; font-family: 'Inter', monospace; }}
-      .repo-desc {{ fill: {COLORS['date']}; font-size: 12px; font-family: 'Inter', sans-serif; }}
-      .repo-lang {{ fill: {COLORS['fg']}; font-size: 12px; font-family: 'Inter', sans-serif; }}
-      .repo-stat {{ fill: {COLORS['date']}; font-size: 11px; font-family: 'Inter', monospace; }}
-    </style>
-  </defs>
-
-  <!-- Card background -->
-  <rect x="0" y="0" width="495" height="{height}" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="{height}" rx="10" class="border"/>
-
-  <!-- Header -->
-  <text x="24" y="38" class="title">🚀 My Contributions (6 months)</text>
-
-  <!-- Repos -->
-  {repo_section}
-</svg>"""
-
-# ==================== SVG CARD 3: WEEKLY ACTIVITY (FIXED) ====================
-
+# Weekly activity bars
 days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 max_activity = max([weekly_activity.get(d, 0) for d in days_short], default=1)
 
 activity_bars = []
-bar_spacing = 60
-start_x = 40
+bar_spacing = 42
+start_x = 450
 
 for i, day in enumerate(days_short):
     count = weekly_activity.get(day, 0)
-    # Fixed: max bar height is now 70px instead of 90px
-    bar_height = max((count / max(max_activity, 1)) * 70, 3) if count > 0 else 0
+    bar_height = max((count / max(max_activity, 1)) * 60, 2) if count > 0 else 2
     
     x_pos = start_x + i * bar_spacing
-    y_base = 135  # Moved up from 145
+    y_base = 335
     
     # Color intensity
     if count == 0:
-        bar_color = COLORS['graph_bg']
+        bar_color = COLORS['border']
         opacity = 0.3
     else:
         bar_color = COLORS['graph_bar']
         opacity = 0.5 + (count / max(max_activity, 1)) * 0.5
 
     activity_bars.append(f"""
-    <!-- {day} -->
     <g>
-      <rect x="{x_pos}" y="{y_base - bar_height}" width="45" height="{bar_height}" rx="6" 
-            fill="{bar_color}" opacity="{opacity}">
-        <animate attributeName="height" from="0" to="{bar_height}" dur="0.6s" begin="{i * 0.1}s" fill="freeze"/>
-        <animate attributeName="y" from="{y_base}" to="{y_base - bar_height}" dur="0.6s" begin="{i * 0.1}s" fill="freeze"/>
-      </rect>
-      {f'<text x="{x_pos + 22.5}" y="{y_base - bar_height - 8}" text-anchor="middle" class="count">{count}</text>' if count > 0 else ''}
-      <text x="{x_pos + 22.5}" y="{y_base + 18}" text-anchor="middle" class="day-label">{day}</text>
+      <rect x="{x_pos}" y="{y_base - bar_height}" width="30" height="{bar_height}" rx="4" 
+            fill="{bar_color}" opacity="{opacity}"/>
+      {f'<text x="{x_pos + 15}" y="{y_base - bar_height - 6}" text-anchor="middle" class="count-small">{count}</text>' if count > 0 else ''}
+      <text x="{x_pos + 15}" y="{y_base + 15}" text-anchor="middle" class="day-label-small">{day[:1]}</text>
     </g>
   """)
 
 activity_section = "\n".join(activity_bars)
 
-weekly_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
-      
-      .bg {{ fill: {COLORS['card_bg']}; }}
-      .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
-      .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .subtitle {{ fill: {COLORS['date']}; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }}
-      .day-label {{ fill: {COLORS['date']}; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; }}
-      .count {{ fill: {COLORS['title']}; font-size: 12px; font-weight: 700; font-family: 'Inter', monospace; }}
-      .baseline {{ stroke: {COLORS['border']}; stroke-width: 1; opacity: 0.3; stroke-dasharray: 4,4; }}
-    </style>
-  </defs>
+# Coding hours
+time_blocks_data = [
+    ("Night", "00-04", sum(commit_hours.get(h, 0) for h in range(0, 4))),
+    ("Morning", "04-12", sum(commit_hours.get(h, 0) for h in range(4, 12))),
+    ("Afternoon", "12-18", sum(commit_hours.get(h, 0) for h in range(12, 18))),
+    ("Evening", "18-24", sum(commit_hours.get(h, 0) for h in range(18, 24))),
+]
 
-  <!-- Card background -->
-  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
-
-  <!-- Header -->
-  <text x="24" y="38" class="title">📈 Weekly Activity</text>
-  <text x="24" y="58" class="subtitle">Last 7 days</text>
-
-  <!-- Baseline -->
-  <line x1="40" y1="135" x2="455" y2="135" class="baseline"/>
-
-  <!-- Activity bars -->
-  {activity_section}
-</svg>"""
-
-# ==================== SVG CARD 4: COMMIT TIME HEATMAP ====================
-
-# Group hours into 6 blocks of 4 hours each
-time_blocks = {
-    "Night\n(00-04)": sum(commit_hours.get(h, 0) for h in range(0, 4)),
-    "Dawn\n(04-08)": sum(commit_hours.get(h, 0) for h in range(4, 8)),
-    "Morning\n(08-12)": sum(commit_hours.get(h, 0) for h in range(8, 12)),
-    "Afternoon\n(12-16)": sum(commit_hours.get(h, 0) for h in range(12, 16)),
-    "Evening\n(16-20)": sum(commit_hours.get(h, 0) for h in range(16, 20)),
-    "Night\n(20-24)": sum(commit_hours.get(h, 0) for h in range(20, 24)),
-}
-
-max_commits = max(time_blocks.values(), default=1)
+max_commits = max([c for _, _, c in time_blocks_data], default=1)
 
 time_items = []
-block_width = 65
-start_x = 30
+block_width = 70
+start_x_time = 445
 
-for i, (period, count) in enumerate(time_blocks.items()):
-    x_pos = start_x + i * block_width
+for i, (period, hours, count) in enumerate(time_blocks_data):
+    x_pos = start_x_time + i * block_width
     intensity = (count / max(max_commits, 1)) if max_commits > 0 else 0
     
-    # Color based on intensity
+    # Color and emoji based on intensity
     if intensity > 0.7:
-        color = "#39D353"
+        color = COLORS['graph_bar']
         emoji = "🔥"
-    elif intensity > 0.4:
-        color = "#26A641"
+    elif intensity > 0.3:
+        color = COLORS['accent']
         emoji = "⚡"
     elif intensity > 0:
-        color = "#006D32"
+        color = COLORS['border']
         emoji = "✨"
     else:
-        color = COLORS['graph_bg']
+        color = COLORS['border']
         emoji = "💤"
-        
-    period_lines = period.split("\n")
     
     time_items.append(f"""
-    <!-- {period} -->
     <g>
-      <rect x="{x_pos}" y="75" width="55" height="70" rx="8" 
-            fill="{color}" opacity="{0.3 + intensity * 0.7}"/>
-      <text x="{x_pos + 27.5}" y="100" text-anchor="middle" class="emoji">{emoji}</text>
-      <text x="{x_pos + 27.5}" y="120" text-anchor="middle" class="time-count">{count}</text>
-      <text x="{x_pos + 27.5}" y="165" text-anchor="middle" class="time-label">{period_lines[0]}</text>
-      <text x="{x_pos + 27.5}" y="178" text-anchor="middle" class="time-label">{period_lines[1]}</text>
+      <rect x="{x_pos}" y="405" width="60" height="65" rx="6" 
+            fill="{COLORS['card_bg']}" opacity="{0.5 + intensity * 0.5}"/>
+      <text x="{x_pos + 30}" y="430" text-anchor="middle" class="emoji-small">{emoji}</text>
+      <text x="{x_pos + 30}" y="448" text-anchor="middle" class="time-count">{count}</text>
+      <text x="{x_pos + 30}" y="462" text-anchor="middle" class="time-label-small">{period}</text>
     </g>
   """)
 
 time_section = "\n".join(time_items)
 
-time_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="http://www.w3.org/2000/svg">
+# ==================== MEGA DASHBOARD SVG ====================
+
+dashboard_svg = f"""<svg width="800" height="520" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:{COLORS['gradient_start']};stop-opacity:1" />
+      <stop offset="50%" style="stop-color:{COLORS['gradient_end']};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:{COLORS['graph_bar']};stop-opacity:1" />
+    </linearGradient>
+    
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
       
-      .bg {{ fill: {COLORS['card_bg']}; }}
+      .card {{ filter: drop-shadow(0 4px 16px rgba(0,0,0,0.3)); }}
+      .bg {{ fill: {COLORS['bg']}; }}
       .border {{ fill: none; stroke: {COLORS['border']}; stroke-width: 1; }}
-      .title {{ fill: {COLORS['fg']}; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }}
-      .subtitle {{ fill: {COLORS['date']}; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }}
-      .emoji {{ font-size: 20px; }}
+      .card-section {{ fill: {COLORS['card_bg']}; }}
+      
+      .dashboard-title {{ fill: {COLORS['fg']}; font-size: 24px; font-weight: 700; font-family: 'Inter', sans-serif; }}
+      .dashboard-subtitle {{ fill: {COLORS['date']}; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; }}
+      
+      .stat-value-big {{ fill: {COLORS['title']}; font-size: 28px; font-weight: 700; font-family: 'Inter', sans-serif; }}
+      .stat-label-small {{ fill: {COLORS['date']}; font-size: 10px; font-weight: 500; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }}
+      
+      .section-title {{ fill: {COLORS['fg']}; font-size: 16px; font-weight: 600; font-family: 'Inter', sans-serif; }}
+      
+      .repo-name {{ fill: {COLORS['title']}; font-size: 15px; font-weight: 600; font-family: 'Inter', monospace; }}
+      .repo-desc {{ fill: {COLORS['date']}; font-size: 11px; font-family: 'Inter', sans-serif; }}
+      .repo-lang {{ fill: {COLORS['fg']}; font-size: 11px; font-family: 'Inter', sans-serif; }}
+      .repo-stat {{ fill: {COLORS['date']}; font-size: 11px; font-family: 'Inter', monospace; }}
+      
+      .day-label-small {{ fill: {COLORS['date']}; font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; }}
+      .count-small {{ fill: {COLORS['title']}; font-size: 11px; font-weight: 700; font-family: 'Inter', monospace; }}
+      
+      .emoji-small {{ font-size: 18px; }}
       .time-count {{ fill: {COLORS['title']}; font-size: 16px; font-weight: 700; font-family: 'Inter', monospace; }}
-      .time-label {{ fill: {COLORS['date']}; font-size: 10px; font-family: 'Inter', sans-serif; }}
+      .time-label-small {{ fill: {COLORS['date']}; font-size: 9px; font-family: 'Inter', sans-serif; }}
+      
+      .divider {{ stroke: {COLORS['border']}; stroke-width: 1; opacity: 0.5; }}
     </style>
   </defs>
 
   <!-- Card background -->
-  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
-  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+  <rect class="card bg" x="0" y="0" width="800" height="520" rx="12"/>
+  <rect x="0" y="0" width="800" height="520" rx="12" class="border"/>
+  
+  <!-- Header gradient bar -->
+  <rect x="0" y="0" width="800" height="4" fill="url(#headerGrad)"/>
 
   <!-- Header -->
-  <text x="24" y="38" class="title">⏰ When I Code</text>
-  <text x="24" y="58" class="subtitle">Last 30 days activity</text>
+  <text x="30" y="45" class="dashboard-title">📊 GitHub Activity Dashboard</text>
+  <text x="30" y="65" class="dashboard-subtitle">@{USERNAME} • Updated {now}</text>
 
-  <!-- Time blocks -->
+  <!-- Mini Stats -->
+  <g>
+    <!-- Repositories -->
+    <rect x="30" y="90" width="170" height="85" rx="8" class="card-section"/>
+    <text x="115" y="130" text-anchor="middle" class="stat-value-big">{public_repos}</text>
+    <text x="115" y="148" text-anchor="middle" class="stat-label-small">Repositories</text>
+    
+    <!-- Followers -->
+    <rect x="220" y="90" width="170" height="85" rx="8" class="card-section"/>
+    <text x="305" y="130" text-anchor="middle" class="stat-value-big">{followers}</text>
+    <text x="305" y="148" text-anchor="middle" class="stat-label-small">Followers</text>
+    
+    <!-- Events -->
+    <rect x="410" y="90" width="360" height="85" rx="8" class="card-section"/>
+    <text x="590" y="130" text-anchor="middle" class="stat-value-big">{streak}</text>
+    <text x="590" y="148" text-anchor="middle" class="stat-label-small">Events (30 days)</text>
+  </g>
+
+  <!-- Left Section: Top Contributions -->
+  <text x="30" y="215" class="section-title">🚀 Top Contributions (6 months)</text>
+  {repo_section}
+
+  <!-- Right Section: Activity -->
+  <text x="445" y="215" class="section-title">📈 Weekly Activity</text>
+  <text x="445" y="235" class="dashboard-subtitle">Last 7 days</text>
+  
+  <!-- Weekly bars -->
+  <line x1="445" y1="335" x2="745" y2="335" class="divider" stroke-dasharray="4,4"/>
+  {activity_section}
+
+  <!-- Coding Hours -->
+  <text x="445" y="385" class="section-title">⏰ When I Code</text>
   {time_section}
 </svg>"""
 
 # ==================== SAVE SVG FILES ====================
 
-print("💾 Saving SVG files...")
+print("💾 Saving dashboard...")
 
 os.makedirs("stats", exist_ok=True)
 
-with open("stats/overview.svg", "w") as f:
-    f.write(overview_svg)
-    print("✅ stats/overview.svg")
-
-with open("stats/repos.svg", "w") as f:
-    f.write(repos_svg)
-    print("✅ stats/repos.svg (6 months, GitHub-style graph)")
-
-with open("stats/weekly.svg", "w") as f:
-    f.write(weekly_svg)
-    print("✅ stats/weekly.svg (FIXED - bars stay in frame)")
-
-with open("stats/time.svg", "w") as f:
-    f.write(time_svg)
-    print("✅ stats/time.svg (NEW - coding time distribution)")
+with open("stats/dashboard.svg", "w") as f:
+    f.write(dashboard_svg)
+    print("✅ stats/dashboard.svg")
 
 print("\n✨ Done! Use in README:")
 print("""
-<p align="center">
-  <img src="stats/overview.svg" alt="GitHub Stats" />
-  <img src="stats/repos.svg" alt="Top Repositories" />
-  <img src="stats/weekly.svg" alt="Weekly Activity" />
-  <img src="stats/time.svg" alt="Coding Time" />
-</p>
+<div align="center">
+  <img src="stats/dashboard.svg" alt="GitHub Activity Dashboard" width="100%" />
+</div>
 """)
