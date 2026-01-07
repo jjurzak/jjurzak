@@ -2,8 +2,8 @@ name: Update GitHub Stats
 
 on:
   schedule:
-    - cron: "0 */12 * * *"   # co 12h
-  workflow_dispatch:         # ręczne uruchomienie
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
   push:
     paths:
       - ".github/workflows/generate-stats.yml"
@@ -20,6 +20,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.10"
+
+    - name: Install dependencies
+      run: pip install requests
 
     - name: Run stat generator
       run: python stats/generate_stats.py
