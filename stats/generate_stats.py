@@ -2,26 +2,27 @@ import os
 import requests
 from datetime import datetime, timedelta
 from collections import defaultdict, Counter
+import html
 
 USERNAME = "jjurzak"
 HEADERS = {"Accept": "application/vnd.github+json"}
 
 def fetch(url):
-    """Fetch data from GitHub API (simple safe wrapper)."""
     try:
         r = requests.get(url, headers=HEADERS, timeout=10)
         if r.status_code == 403:
             return None
         return r.json()
-    except Exception:
+    except:
         return None
 
-# ---------- Helpers for smooth area/line paths ----------
+# Escape unsafe XML characters
+def esc(s):
+    return html.escape(s or "")
+
+# ------------ Smoothing helpers -----------------
+
 def catmull_rom_to_bezier(points):
-    """
-    Convert a list of (x,y) points to a smooth cubic-bezier path using Catmull-Rom to Bezier conversion.
-    Returns path string of 'M x0,y0 C ...' (does not close).
-    """
     if not points:
         return ""
     if len(points) == 1:
@@ -31,55 +32,39 @@ def catmull_rom_to_bezier(points):
         (x0, y0), (x1, y1) = points
         return f"M {x0:.2f},{y0:.2f} L {x1:.2f},{y1:.2f}"
 
-    # duplicate start/end to act as neighbours
     pts = [points[0]] + points + [points[-1]]
     path = []
-    x0, y0 = points[0]
+    x0, y0 = pts[1]
     path.append(f"M {x0:.2f},{y0:.2f}")
-
     for i in range(1, len(pts)-2):
-        p0x, p0y = pts[i-1]
-        p1x, p1y = pts[i]
-        p2x, p2y = pts[i+1]
-        p3x, p3y = pts[i+2]
-
-        # Catmull-Rom to Bezier conversion factor
-        c1x = p1x + (p2x - p0x) / 6.0
-        c1y = p1y + (p2y - p0y) / 6.0
-        c2x = p2x - (p3x - p1x) / 6.0
-        c2y = p2y - (p3y - p1y) / 6.0
-
+        p0x,p0y = pts[i-1]
+        p1x,p1y = pts[i]
+        p2x,p2y = pts[i+1]
+        p3x,p3y = pts[i+2]
+        c1x = p1x + (p2x - p0x) / 6
+        c1y = p1y + (p2y - p0y) / 6
+        c2x = p2x - (p3x - p1x) / 6
+        c2y = p2y - (p3y - p1y) / 6
         path.append(f"C {c1x:.2f},{c1y:.2f} {c2x:.2f},{c2y:.2f} {p2x:.2f},{p2y:.2f}")
-
     return " ".join(path)
 
-def make_area_path(points, bottom_y, left_x, right_x):
-    """
-    Given a list of points (x,y) that form the top curve,
-    return a closed area path string: start at left bottom, up to first point, smooth curve to last, then to right bottom, close.
-    left_x and right_x allow area to align with chart box edges.
-    """
+def make_area(points, bottom_y, left_x, right_x):
     if not points:
         return ""
-    # Build smooth top path
-    top_path = catmull_rom_to_bezier(points)
-    # Construct area by starting from bottom-left, then along top_path, then to bottom-right and close
     first_x, first_y = points[0]
-    last_x, last_y = points[-1]
-    area = f"M {left_x:.2f},{bottom_y:.2f} "  # bottom-left
-    area += f"L {first_x:.2f},{first_y:.2f} "  # up to first top point
-    # append the smooth path but drop the leading "M x,y" because we're already at that point
-    if top_path.startswith("M "):
-        area += top_path[ top_path.find(" ")+1 + top_path[top_path.find(" ")+1:].find(" ")+1:] if False else top_path.replace(f"M {first_x:.2f},{first_y:.2f} ", "")
-        # simpler: append full bezier but ensure not duplicating the first point
-        area += " " + top_path.replace(f"M {first_x:.2f},{first_y:.2f}", "").strip()
-    else:
-        area += " " + top_path
-    area += f" L {right_x:.2f},{bottom_y:.2f} Z"
-    return area
+    last_x, _ = points[-1]
+    top = catmull_rom_to_bezier(points)
+    top = top.replace(f"M {first_x:.2f},{first_y:.2f}", "").strip()
+    return (
+        f"M {left_x:.2f},{bottom_y:.2f} "
+        f"L {first_x:.2f},{first_y:.2f} "
+        f"{top} "
+        f"L {right_x:.2f},{bottom_y:.2f} Z"
+    )
 
-# ---------- Data collection ----------
-print("📊 Fetching GitHub stats...")
+# ------------ Fetch data -----------------
+
+print("📊 Fetching...")
 
 user = fetch(f"https://api.github.com/users/{USERNAME}") or {}
 repos = fetch(f"https://api.github.com/users/{USERNAME}/repos?per_page=200") or []
@@ -91,261 +76,201 @@ six_months_ago = datetime.utcnow() - timedelta(days=180)
 
 repo_stats = []
 for repo in repos:
-    if repo.get("fork", False) or repo.get("name") == USERNAME:
+    if repo.get("fork") or repo.get("name") == USERNAME:
         continue
     name = repo.get("name", "")
-    print(f"  Checking {name}...")
-    commits_url = f"https://api.github.com/repos/{USERNAME}/{name}/commits?author={USERNAME}&since={six_months_ago.strftime('%Y-%m-%dT%H:%M:%SZ')}&per_page=100"
-    commits = fetch(commits_url) or []
-    commit_count = len(commits) if isinstance(commits, list) else 0
+    print("Checking", name)
+    commits = fetch(
+        f"https://api.github.com/repos/{USERNAME}/{name}/commits"
+        f"?author={USERNAME}&since={six_months_ago.strftime('%Y-%m-%dT%H:%M:%SZ')}&per_page=100"
+    )
+    if not isinstance(commits, list):
+        continue
+    weekly = [0]*26
+    for c in commits:
+        try:
+            t = datetime.strptime(c["commit"]["author"]["date"], "%Y-%m-%dT%H:%M:%SZ")
+            w = (datetime.utcnow() - t).days // 7
+            if 0 <= w < 26:
+                weekly[25-w]+=1
+        except:
+            pass
+    if weekly and sum(weekly)>0:
+        repo_stats.append({"repo":repo,"commits":sum(weekly),"weekly":weekly})
 
-    weekly_commits = [0] * 26
-    if commit_count > 0:
-        for c in commits:
-            try:
-                date_str = c.get("commit", {}).get("author", {}).get("date")
-                if date_str:
-                    t = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
-                    weeks_ago = (datetime.utcnow() - t).days // 7
-                    if 0 <= weeks_ago < 26:
-                        weekly_commits[25 - weeks_ago] += 1
-            except Exception:
-                continue
+top_repos = sorted(repo_stats, key=lambda x:x["commits"], reverse=True)[:3]
 
-    if commit_count > 0:
-        repo_stats.append({
-            "repo": repo,
-            "commits": commit_count,
-            "weekly": weekly_commits
-        })
-
-# choose top 3
-top_repos = sorted(repo_stats, key=lambda x: x["commits"], reverse=True)[:3]
-
-# Weekly activity and commit hours
+# 30-day event streak + hours
 events = fetch(f"https://api.github.com/users/{USERNAME}/events?per_page=100") or []
-cutoff = datetime.utcnow() - timedelta(days=7)
+weekly_act = Counter()
+commit_hours = Counter()
+cutoff7 = datetime.utcnow() - timedelta(days=7)
 cutoff30 = datetime.utcnow() - timedelta(days=30)
 
-weekly_activity = Counter()
-commit_hours = Counter()
-for evt in events:
+for e in events:
     try:
-        t = datetime.strptime(evt["created_at"], "%Y-%m-%dT%H:%M:%SZ")
-        if t >= cutoff:
-            weekly_activity[t.strftime("%a")] += 1
-        if t >= cutoff30:
-            commit_hours[t.hour] += 1
-    except Exception:
-        continue
+        t = datetime.strptime(e["created_at"],"%Y-%m-%dT%H:%M:%SZ")
+        if t>=cutoff7: weekly_act[t.strftime("%a")] += 1
+        if t>=cutoff30: commit_hours[t.hour] += 1
+    except:
+        pass
 
-# ---------- Theme ----------
-MODE = "dark"
-THEMES = {
-    "dark": {
-        "bg": "#0D1117",
-        "card_bg": "#0F1720",
-        "fg": "#C9D1D9",
-        "title": "#58A6FF",
-        "accent": "#1F6FEB",
-        "border": "#27303a",
-        "date": "#8B949E",
-        "graph_bar": "#39D353",
-    },
-    "light": {
-        "bg": "#FFFFFF",
-        "card_bg": "#F6F8FA",
-        "fg": "#24292F",
-        "title": "#0969DA",
-        "accent": "#1F6FEB",
-        "border": "#D0D7DE",
-        "date": "#57606A",
-        "graph_bar": "#2DA44E",
-    }
+# ------------ Colors ---------------
+COLORS={
+    "bg":"#0D1117",
+    "card":"#161B22",
+    "fg":"#C9D1D9",
+    "title":"#58A6FF",
+    "date":"#8B949E",
+    "border":"#30363D",
+    "green":"#39D353"
 }
-COLORS = THEMES[MODE]
+
+LANG_COLORS={"Python":"#3572A5"}
+
+def langc(x):
+    return LANG_COLORS.get(x, COLORS["green"])
+
 now = datetime.utcnow().strftime("%b %d, %Y")
 
-# language colors (short)
-LANG_COLORS = {"Python":"#3572A5"}
-def get_lang_color(lang):
-    return LANG_COLORS.get(lang, COLORS["accent"])
+# ------------ Layout ----------------
+W,H=1200,720
+left_x=30
+left_w=560
+right_x=left_x+left_w+20
+right_w=W-right_x-30
+chart_w=right_w-40
+chart_h=70
 
-# ---------- Build one big dashboard SVG ----------
-W = 1200
-H = 680
+# ------------ Repo section ----------
+repo_svg=[]
+for idx,item in enumerate(top_repos):
+    repo=item["repo"]
+    name=esc(repo.get("name"))
+    desc=esc(repo.get("description") or "No description")
+    lang=repo.get("language") or "Code"
+    weekly=item["weekly"]
+    color=langc(lang)
 
-# layout areas
-left_x = 30
-left_w = 560
-right_x = left_x + left_w + 20
-right_w = W - right_x - 30
+    maxw=max(weekly) if max(weekly)>0 else 1
+    points=[]
+    top_y=160+idx*(chart_h+90)
+    for j,v in enumerate(weekly):
+        x = right_x+20+(j/25)*chart_w
+        y = top_y + chart_h*(1 - v/maxw)
+        points.append((x,y))
 
-# repo chart parameters
-chart_w = right_w - 40
-chart_h = 70
-chart_left = right_x + 20
+    bottom=top_y+chart_h+6
+    area=make_area(points,bottom,points[0][0],points[-1][0])
+    line=catmull_rom_to_bezier(points)
 
-# Compose repo blocks
-repo_blocks_svg = []
-for idx, item in enumerate(top_repos):
-    repo = item["repo"]
-    commits = item["commits"]
-    weekly = item["weekly"]
-    name = repo.get("name", "repo")
-    desc = repo.get("description") or "No description"
-    lang = repo.get("language") or "Code"
-    lang_color = get_lang_color(lang)
+    repo_svg.append(f"""
+    <g>
+      <text x="{right_x+20}" y="{top_y-10}" class="repo-name">{name}</text>
+      <text x="{right_x+20}" y="{top_y+8}" class="repo-desc">{desc}</text>
 
-    # Prepare points for chart (26 weeks)
-    max_week = max(weekly) if max(weekly, default=0) > 0 else 1
-    points = []
-    for j, v in enumerate(weekly):
-        x = chart_left + (j / max(25, 1)) * chart_w
-        # invert Y: larger v => smaller y
-        normalized = v / max_week
-        y = 180 + idx * (chart_h + 90) + (chart_h - normalized * chart_h)
-        points.append((x, y))
+      <defs>
+        <linearGradient id="g{idx}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="{color}" stop-opacity="0.45"/>
+          <stop offset="70%" stop-color="{color}" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="{color}" stop-opacity="0.03"/>
+        </linearGradient>
+      </defs>
 
-    # bottom baseline for area
-    bottom_y = 180 + idx * (chart_h + 90) + chart_h + 6
-    area_path = make_area_path(points, bottom_y, points[0][0], points[-1][0])
-    line_path = catmull_rom_to_bezier(points)
+      <path d="{area}" fill="url(#g{idx})"/>
+      <path d="{line}" fill="none" stroke="{color}" stroke-width="2.4" stroke-linecap="round"/>
 
-    repo_block = f"""
-    <!-- Repo {idx} -->
-    <g opacity="0.98">
-      <text x="{chart_left}" y="{150 + idx * (chart_h + 90)}" class="repo-name">{name}</text>
-      <text x="{chart_left}" y="{165 + idx * (chart_h + 90)}" class="repo-desc">{desc}</text>
-
-      <g transform="translate(0,0)">
-        <defs>
-          <linearGradient id="areaGrad{idx}" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%" stop-color="{lang_color}" stop-opacity="0.42"/>
-            <stop offset="60%" stop-color="{lang_color}" stop-opacity="0.12"/>
-            <stop offset="100%" stop-color="{lang_color}" stop-opacity="0.02"/>
-          </linearGradient>
-        </defs>
-
-        <!-- area fill -->
-        <path d="{area_path}" fill="url(#areaGrad{idx})" stroke="none" />
-
-        <!-- smooth line -->
-        <path d="{line_path}" fill="none" stroke="{lang_color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-
-        <!-- small circles on points (optional) -->
-      </g>
-
-      <text x="{chart_left + chart_w + 8}" y="{160 + idx * (chart_h + 90)}" class="repo-stat">📝 {commits} commits</text>
+      <text x="{right_x+20+chart_w+5}" y="{top_y+4}" class="repo-desc">📝 {item["commits"]} commits</text>
     </g>
-    """
-    repo_blocks_svg.append(repo_block)
+    """)
 
-repo_blocks_joined = "\n".join(repo_blocks_svg) if repo_blocks_svg else '<text x="{chart_left+20}" y="240" class="repo-desc">No contributions in last 6 months</text>'
+repo_block="\n".join(repo_svg) if repo_svg else "<text x='600' y='250'>No data</text>"
 
-# Weekly activity bars (simple)
-days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
-max_act = max([weekly_activity.get(d,0) for d in days], default=1)
-bar_svg = []
-bar_w = (left_w - 60) / len(days)
-bx = left_x + 30
-by = 430
+# ------------ Weekly bars -----------
+days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+max_act=max([weekly_act.get(d,0) for d in days], default=1)
+bars=[]
+bx=left_x+30
+baseline=400
 for i,d in enumerate(days):
-    cnt = weekly_activity.get(d,0)
-    h = (cnt / max_act) * 90 if max_act>0 else 0
-    x = bx + i * (bar_w + 6)
-    y = by - h
-    opacity = 0.45 + (cnt / max_act) * 0.5 if cnt>0 else 0.25
-    bar_svg.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{h:.1f}" rx="6" fill="{COLORS["graph_bar"]}" opacity="{opacity:.2f}" />')
-    if cnt>0:
-        bar_svg.append(f'<text x="{x + bar_w/2:.1f}" y="{y - 8:.1f}" text-anchor="middle" class="count-small">{cnt}</text>')
-    bar_svg.append(f'<text x="{x + bar_w/2:.1f}" y="{by + 18:.1f}" text-anchor="middle" class="day-label-small">{d[:3]}</text>')
+    c=weekly_act.get(d,0)
+    bh=(c/max_act)*90
+    x=bx+i*75
+    y=baseline-bh
+    bars.append(f'<rect x="{x}" y="{y}" width="50" height="{bh}" rx="6" fill="{COLORS["green"]}" opacity="{0.45+(c/max_act)*0.5 if c else 0.25}"/>')
+    bars.append(f'<text x="{x+25}" y="{baseline+16}" text-anchor="middle" class="day-label-small">{d}</text>')
+    if c>0:
+        bars.append(f'<text x="{x+25}" y="{y-6}" text-anchor="middle" class="count-small">{c}</text>')
+bars="\n".join(bars)
 
-bar_joined = "\n".join(bar_svg)
-
-# Time blocks
-time_blocks = [
-    ("00-04", sum(commit_hours.get(h,0) for h in range(0,4))),
-    ("04-08", sum(commit_hours.get(h,0) for h in range(4,8))),
-    ("08-12", sum(commit_hours.get(h,0) for h in range(8,12))),
-    ("12-16", sum(commit_hours.get(h,0) for h in range(12,16))),
-    ("16-20", sum(commit_hours.get(h,0) for h in range(16,20))),
-    ("20-24", sum(commit_hours.get(h,0) for h in range(20,24))),
+# ------------ Time blocks ----------
+tb=[]
+tblocks=[
+    ("00-04",sum(commit_hours[h] for h in range(0,4))),
+    ("04-08",sum(commit_hours[h] for h in range(4,8))),
+    ("08-12",sum(commit_hours[h] for h in range(8,12))),
+    ("12-16",sum(commit_hours[h] for h in range(12,16))),
+    ("16-20",sum(commit_hours[h] for h in range(16,20))),
+    ("20-24",sum(commit_hours[h] for h in range(20,24))),
 ]
-max_time = max((c for _,c in time_blocks), default=1)
-tb_svg = []
-tx = left_x + 30
-for i,(lbl,cnt) in enumerate(time_blocks):
-    w = 60
-    x = tx + i * (w + 12)
-    intensity = (cnt / max_time) if max_time>0 else 0
-    op = 0.25 + 0.65*intensity
-    tb_svg.append(f'<rect x="{x}" y="520" width="{w}" height="70" rx="8" fill="{COLORS["card_bg"]}" opacity="{op:.2f}" />')
-    tb_svg.append(f'<text x="{x + w/2}" y="545" text-anchor="middle" class="emoji-small">{"🔥" if intensity>0.6 else "⚡" if intensity>0.3 else "✨" if intensity>0 else "💤"}</text>')
-    tb_svg.append(f'<text x="{x + w/2}" y="565" text-anchor="middle" class="time-count">{cnt}</text>')
-    tb_svg.append(f'<text x="{x + w/2}" y="590" text-anchor="middle" class="time-label-small">{lbl}</text>')
-tb_joined = "\n".join(tb_svg)
+max_t=max((c for _,c in tblocks),default=1)
+tx=left_x+20
+for i,(lbl,c) in enumerate(tblocks):
+    w=60
+    x=tx+i*(w+12)
+    op=0.25+(c/max_t)*0.7
+    emoji="🔥" if c/max_t>0.6 else "⚡" if c/max_t>0.3 else "✨" if c>0 else "💤"
+    tb.append(f'<rect x="{x}" y="500" width="{w}" height="75" rx="8" fill="{COLORS["card"]}" opacity="{op}"/>')
+    tb.append(f'<text x="{x+w/2}" y="525" text-anchor="middle" class="emoji-small">{emoji}</text>')
+    tb.append(f'<text x="{x+w/2}" y="545" text-anchor="middle" class="time-count">{c}</text>')
+    tb.append(f'<text x="{x+w/2}" y="570" text-anchor="middle" class="time-label-small">{lbl}</text>')
+tb="\n".join(tb)
 
-# Final big SVG
-svg = f'''<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-      .bg {{ fill: {COLORS["bg"]}; }}
-      .card {{ fill: {COLORS["card_bg"]}; stroke: {COLORS["border"]}; stroke-width: 1; rx: 12; }}
-      .dashboard-title {{ fill: {COLORS["fg"]}; font-size: 22px; font-weight:700; font-family:Inter, sans-serif; }}
-      .dashboard-sub {{ fill: {COLORS["date"]}; font-size:12px; font-family:Inter, sans-serif; }}
-      .repo-name {{ fill: {COLORS["title"]}; font-size:14px; font-weight:600; font-family:Inter, monospace; }}
-      .repo-desc {{ fill: {COLORS["date"]}; font-size:11px; font-family:Inter, sans-serif; }}
-      .repo-stat {{ fill: {COLORS["date"]}; font-size:11px; font-family:Inter, monospace; }}
-      .day-label-small {{ fill: {COLORS["date"]}; font-size:11px; font-family:Inter, sans-serif; }}
-      .count-small {{ fill: {COLORS["title"]}; font-size:11px; font-weight:700; font-family:Inter, monospace; }}
-      .emoji-small {{ font-size:16px; }}
-      .time-count {{ fill: {COLORS["title"]}; font-size:13px; font-weight:700; font-family:Inter, monospace; }}
-      .time-label-small {{ fill: {COLORS["date"]}; font-size:10px; font-family:Inter, sans-serif; }}
-    </style>
-  </defs>
+# ------------ TEMPLATE -------------
+svg=f"""<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}"
+ xmlns="http://www.w3.org/2000/svg">
+<style>
+* {{ font-family: Inter, sans-serif; }}
+.bg {{ fill:{COLORS["bg"]}; }}
+.card {{ fill:{COLORS["card"]}; stroke:{COLORS["border"]}; stroke-width:1; }}
+.dashboard-title {{ fill:{COLORS["fg"]}; font-size:22px; font-weight:700; }}
+.dashboard-sub {{ fill:{COLORS["date"]}; font-size:12px; }}
+.repo-name {{ fill:{COLORS["title"]}; font-size:14px; font-weight:600; }}
+.repo-desc {{ fill:{COLORS["date"]}; font-size:11px; }}
+.day-label-small {{ fill:{COLORS["date"]}; font-size:11px; }}
+.count-small {{ fill:{COLORS["title"]}; font-size:11px; font-weight:700; }}
+.emoji-small {{ font-size:16px; }}
+.time-count {{ fill:{COLORS["title"]}; font-size:13px; font-weight:700; }}
+.time-label-small {{ fill:{COLORS["date"]}; font-size:10px; }}
+</style>
 
-  <!-- Background -->
-  <rect x="0" y="0" width="{W}" height="{H}" class="bg" rx="0" />
+<rect width="{W}" height="{H}" class="bg"/>
 
-  <!-- Left card (overview + weekly + time) -->
-  <g transform="translate({left_x},20)">
-    <rect class="card" x="0" y="0" width="{left_w}" height="380" rx="10"/>
-    <text x="20" y="34" class="dashboard-title">📊 GitHub Activity • @{USERNAME}</text>
-    <text x="20" y="54" class="dashboard-sub">Updated {now}</text>
+<!-- Left side -->
+<rect x="{left_x}" y="20" width="{left_w}" height="440" rx="10" class="card"/>
+<text x="{left_x+20}" y="50" class="dashboard-title">📊 GitHub Activity • @{USERNAME}</text>
+<text x="{left_x+20}" y="70" class="dashboard-sub">Updated {now}</text>
+<text x="{left_x+20}" y="110" class="repo-name">Repos: {public_repos}</text>
+<text x="{left_x+150}" y="110" class="repo-name">Followers: {followers}</text>
 
-    <!-- mini stats -->
-    <text x="20" y="92" class="repo-name">Repositories</text>
-    <text x="20" y="112" class="repo-desc">{public_repos}</text>
-    <text x="140" y="92" class="repo-name">Followers</text>
-    <text x="140" y="112" class="repo-desc">{followers}</text>
+<text x="{left_x+20}" y="150" class="repo-name">📈 Weekly Activity</text>
+{bars}
 
-    <!-- Weekly activity -->
-    <text x="20" y="160" class="repo-name">📈 Weekly Activity (last 7 days)</text>
-    {bar_joined}
-  </g>
+<!-- Time -->
+<text x="{left_x+20}" y="480" class="repo-name">⏰ When I Code</text>
+{tb}
 
-  <!-- Right card (repos with contribution-like charts) -->
-  <g>
-    <rect class="card" x="{right_x}" y="20" width="{right_w}" height="360" rx="10"/>
-    <text x="{right_x + 20}" y="48" class="dashboard-title">🚀 Top Contributions (6 months)</text>
-    {repo_blocks_joined}
-  </g>
+<!-- Right side -->
+<rect x="{right_x}" y="20" width="{right_w}" height="640" rx="10" class="card"/>
+<text x="{right_x+20}" y="50" class="dashboard-title">🚀 Top Contributions (6 months)</text>
 
-  <!-- Bottom: time blocks -->
-  <g transform="translate(0,0)">
-    <rect class="card" x="{left_x}" y="470" width="{W - 2*left_x}" height="180" rx="10"/>
-    <text x="{left_x + 20}" y="500" class="repo-name">⏰ When I Code (last 30 days)</text>
-    {tb_joined}
-  </g>
+{repo_block}
+
 </svg>
-'''
+"""
 
-# Save file
-os.makedirs("stats", exist_ok=True)
-with open("stats/dashboard.svg", "w", encoding="utf-8") as f:
+os.makedirs("stats",exist_ok=True)
+with open("stats/dashboard.svg","w",encoding="utf-8") as f:
     f.write(svg)
 
-print("✅ Saved stats/dashboard.svg (one big dashboard with gradient area under repo lines).")
-print("👉 Otwórz stats/dashboard.svg w przeglądarce lub w README używając <img src='stats/dashboard.svg'/>")
+print("✅ stats/dashboard.svg ready!")
