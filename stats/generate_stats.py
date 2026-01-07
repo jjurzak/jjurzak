@@ -41,12 +41,38 @@ else:
 total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
 total_forks = sum(repo.get("forks_count", 0) for repo in repos)
 
-# Top repos by stars
-top_repos = sorted(
-    [r for r in repos if not r.get("fork", False)],
-    key=lambda x: x.get("stargazers_count", 0),
-    reverse=True
-)[:3]
+# Top repos by commits (excluding jjurzak repo)
+print("🔍 Analyzing repo contributions...")
+repo_stats = []
+for repo in repos:
+    if repo.get("fork", False) or repo.get("name") == "jjurzak":
+        continue
+    
+    # Get commit count and activity
+    stats_url = f"https://api.github.com/repos/{USERNAME}/{repo['name']}/stats/contributors"
+    stats = fetch(stats_url)
+    
+    commit_count = 0
+    weekly_commits = []
+    
+    if stats:
+        for contributor in stats:
+            if contributor.get("author", {}).get("login") == USERNAME:
+                commit_count = contributor.get("total", 0)
+                # Get last 12 weeks of activity
+                weeks = contributor.get("weeks", [])[-12:]
+                weekly_commits = [w.get("c", 0) for w in weeks]
+                break
+    
+    if commit_count > 0:  # Only include repos with commits
+        repo_stats.append({
+            "repo": repo,
+            "commits": commit_count,
+            "weekly": weekly_commits
+        })
+
+# Sort by commits
+top_repos = sorted(repo_stats, key=lambda x: x["commits"], reverse=True)[:3]
 
 # Language aggregation (excluding Jupyter)
 print("📝 Processing languages...")
@@ -212,39 +238,63 @@ overview_svg = f"""<svg width="495" height="195" viewBox="0 0 495 195" xmlns="ht
 repo_items = []
 y_start = 75
 
-for i, repo in enumerate(top_repos[:3]):
+for i, item in enumerate(top_repos[:3]):
+    repo = item["repo"]
+    commits = item["commits"]
+    weekly = item["weekly"]
+    
     name = repo.get("name", "")
     desc = repo.get("description", "")
-    stars = repo.get("stargazers_count", 0)
-    forks = repo.get("forks_count", 0)
     lang = repo.get("language", "Code")
     
     # Truncate description
-    if desc and len(desc) > 45:
-        desc = desc[:42] + "..."
+    if desc and len(desc) > 40:
+        desc = desc[:37] + "..."
     elif not desc:
         desc = "No description"
     
-    y_pos = y_start + i * 70
+    y_pos = y_start + i * 80
     lang_color = get_lang_color(lang)
+    
+    # Generate EKG-style line chart
+    max_weekly = max(weekly) if weekly else 1
+    ekg_points = []
+    chart_width = 250
+    chart_height = 25
+    chart_x = 220
+    chart_y = y_pos + 10
+    
+    for j, count in enumerate(weekly):
+        x = chart_x + (j / max(len(weekly) - 1, 1)) * chart_width
+        y = chart_y + chart_height - (count / max(max_weekly, 1)) * chart_height
+        ekg_points.append(f"{x},{y}")
+    
+    ekg_path = " ".join(ekg_points)
     
     repo_items.append(f"""
     <!-- {name} -->
     <g opacity="0.95">
       <text x="24" y="{y_pos}" class="repo-name">{name}</text>
-      <text x="24" y="{y_pos + 20}" class="repo-desc">{desc}</text>
+      <text x="24" y="{y_pos + 18}" class="repo-desc">{desc}</text>
       
-      <g transform="translate(24, {y_pos + 35})">
+      <g transform="translate(24, {y_pos + 28})">
         <circle cx="5" cy="0" r="5" fill="{lang_color}"/>
         <text x="15" y="4" class="repo-lang">{lang}</text>
-        
-        <text x="120" y="4" class="repo-stat">⭐ {stars}</text>
-        <text x="180" y="4" class="repo-stat">🔱 {forks}</text>
+        <text x="100" y="4" class="repo-stat">📝 {commits} commits</text>
+      </g>
+      
+      <!-- EKG Chart -->
+      <g opacity="0.8">
+        <polyline points="{ekg_path}" fill="none" stroke="{lang_color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <animate attributeName="stroke-dasharray" from="0,1000" to="1000,0" dur="1.5s" fill="freeze"/>
+        </polyline>
+        <!-- Glow effect -->
+        <polyline points="{ekg_path}" fill="none" stroke="{lang_color}" stroke-width="5" opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>
       </g>
     </g>
   """)
 
-height = y_start + len(top_repos) * 70 + 25
+height = y_start + len(top_repos) * 80 + 25
 repo_section = "\n".join(repo_items)
 
 repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xmlns="http://www.w3.org/2000/svg">
@@ -267,7 +317,7 @@ repos_svg = f"""<svg width="495" height="{height}" viewBox="0 0 495 {height}" xm
   <rect x="0" y="0" width="495" height="{height}" rx="10" class="border"/>
 
   <!-- Header -->
-  <text x="24" y="38" class="title">⭐ Top Repositories</text>
+  <text x="24" y="38" class="title">🚀 My Contributions</text>
 
   <!-- Repos -->
   {repo_section}
