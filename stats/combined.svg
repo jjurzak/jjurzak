@@ -56,7 +56,7 @@
     <text x="247" y="92" text-anchor="middle" class="stat-value">0</text>
     <text x="247" y="107" text-anchor="middle" class="stat-label">Followers</text>
 
-    <text x="412" y="92" text-anchor="middle" class="stat-value">62</text>
+    <text x="412" y="92" text-anchor="middle" class="stat-value">65</text>
     <text x="412" y="107" text-anchor="middle" class="stat-label">Events (30d)</text>
   </g>
   <text x="18" y="130" class="footer">↻ Updated Jan 07, 2026</text>
@@ -120,11 +120,11 @@
     </g>
     
     <g>
-      <rect x="94" y="90.52631578947368" width="40" height="14.473684210526315" rx="4" fill="#39D353" opacity="0.631578947368421">
-        <animate attributeName="height" from="0" to="14.473684210526315" dur="0.6s" begin="0.1s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="90.52631578947368" dur="0.6s" begin="0.1s" fill="freeze"/>
+      <rect x="94" y="91.58536585365854" width="40" height="13.414634146341463" rx="4" fill="#39D353" opacity="0.6219512195121951">
+        <animate attributeName="height" from="0" to="13.414634146341463" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="91.58536585365854" dur="0.6s" begin="0.1s" fill="freeze"/>
       </rect>
-      <text x="114" y="85.52631578947368" text-anchor="middle" class="count">10</text>
+      <text x="114" y="86.58536585365854" text-anchor="middle" class="count">10</text>
       <text x="114" y="119" text-anchor="middle" class="day-label">Tue</text>
     </g>
     
@@ -133,7 +133,7 @@
         <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.2s" fill="freeze"/>
         <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.2s" fill="freeze"/>
       </rect>
-      <text x="176" y="45.0" text-anchor="middle" class="count">38</text>
+      <text x="176" y="45.0" text-anchor="middle" class="count">41</text>
       <text x="176" y="119" text-anchor="middle" class="day-label">Wed</text>
     </g>
     
@@ -192,9 +192,9 @@
     </g>
     
     <g>
-      <rect x="97" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
-      <text x="128" y="78" text-anchor="middle" class="emoji">💤</text>
-      <text x="128" y="94" text-anchor="middle" class="time-count">0</text>
+      <rect x="97" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.3446808510638298"/>
+      <text x="128" y="78" text-anchor="middle" class="emoji">✨</text>
+      <text x="128" y="94" text-anchor="middle" class="time-count">3</text>
       <text x="128" y="128" text-anchor="middle" class="time-label">Dawn</text>
       <text x="128" y="137" text-anchor="middle" class="time-label">(04-08)</text>
     </g>
