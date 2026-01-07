@@ -1,0 +1,242 @@
+<svg width="495" height="980" viewBox="0 0 495 980" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+    .bg { fill: #161B22; }
+    .border { fill: none; stroke: #30363D; stroke-width: 1; }
+    .title { fill: #C9D1D9; font-size: 22px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .username { fill: #8B949E; font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .stat-label { fill: #8B949E; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { fill: #58A6FF; font-size: 32px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .footer { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
+    .icon-circle { fill: url(#grad1); opacity: 0.15; }
+    .divider { stroke: #30363D; stroke-width: 1; opacity: 0.5; }
+    
+    .repo-name { fill: #58A6FF; font-size: 16px; font-weight: 600; font-family: 'Inter', monospace; }
+    .repo-desc { fill: #8B949E; font-size: 12px; font-family: 'Inter', sans-serif; }
+    .repo-lang { fill: #C9D1D9; font-size: 12px; font-family: 'Inter', sans-serif; }
+    .repo-stat { fill: #8B949E; font-size: 11px; font-family: 'Inter', monospace; }
+    
+    .subtitle { fill: #8B949E; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; }
+    .day-label { fill: #8B949E; font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; }
+    .count { fill: #58A6FF; font-size: 12px; font-weight: 700; font-family: 'Inter', monospace; }
+    .baseline { stroke: #30363D; stroke-width: 1; opacity: 0.3; stroke-dasharray: 4,4; }
+    
+    .emoji { font-size: 20px; }
+    .time-count { fill: #58A6FF; font-size: 16px; font-weight: 700; font-family: 'Inter', monospace; }
+    .time-label { fill: #8B949E; font-size: 10px; font-family: 'Inter', sans-serif; }
+</style>
+
+    
+<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+    <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+</linearGradient>
+<linearGradient id="areaGrad0" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.05" /></linearGradient><linearGradient id="areaGrad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.05" /></linearGradient><linearGradient id="areaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#1F6FEB;stop-opacity:0.4" /><stop offset="100%" style="stop-color:#1F6FEB;stop-opacity:0.05" /></linearGradient>
+  </defs>
+
+  <!-- Part 1: Overview -->
+  <g transform="translate(0, 0)">
+    
+  <!-- Card background -->
+  <rect class="bg" x="0" y="0" width="495" height="195" rx="10"/>
+  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+  
+  <circle class="icon-circle" cx="450" cy="40" r="60"/>
+  <circle class="icon-circle" cx="40" cy="160" r="40"/>
+
+  <text x="24" y="38" class="title">GitHub Stats</text>
+  <text x="24" y="58" class="username">@jjurzak</text>
+
+  <line x1="165" y1="85" x2="165" y2="150" class="divider"/>
+  <line x1="330" y1="85" x2="330" y2="150" class="divider"/>
+
+  <g>
+    <text x="82" y="125" text-anchor="middle" class="stat-value">14</text>
+    <text x="82" y="145" text-anchor="middle" class="stat-label">Repositories</text>
+
+    <text x="247" y="125" text-anchor="middle" class="stat-value">0</text>
+    <text x="247" y="145" text-anchor="middle" class="stat-label">Followers</text>
+
+    <text x="412" y="125" text-anchor="middle" class="stat-value">59</text>
+    <text x="412" y="145" text-anchor="middle" class="stat-label">Events (30d)</text>
+  </g>
+  <text x="24" y="180" class="footer">↻ Updated Jan 07, 2026</text>
+
+  </g>
+
+  <!-- Part 2: Repos -->
+  <g transform="translate(0, 215)">
+    
+  <rect x="0" y="0" width="495" height="335" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="335" rx="10" class="border"/>
+  <text x="24" y="38" class="title">🚀 My Contributions (6 months)</text>
+  
+        <g opacity="0.95">
+            <text x="24" y="75" class="repo-name">NoD2</text>
+            <text x="24" y="93" class="repo-desc">No description</text>
+            <circle cx="29" cy="103" r="5" fill="#3572A5"/>
+            <text x="39" y="107" class="repo-lang">Python</text>
+            <text x="124" y="107" class="repo-stat">📝 21 commits</text>
+            <path d="M 225,110 L 225.0,110.0 L 234.6,110.0 L 244.2,110.0 L 253.8,110.0 L 263.4,110.0 L 273.0,110.0 L 282.6,110.0 L 292.2,110.0 L 301.8,110.0 L 311.4,110.0 L 321.0,110.0 L 330.6,110.0 L 340.2,110.0 L 349.8,110.0 L 359.4,110.0 L 369.0,102.0 L 378.6,106.0 L 388.20000000000005,102.0 L 397.79999999999995,94.0 L 407.4,110.0 L 417.0,86.0 L 426.6,110.0 L 436.2,94.0 L 445.8,102.0 L 455.4,110.0 L 465.0,110.0 L 465,110 Z" fill="url(#areaGrad0)"><animate attributeName="opacity" from="0" to="1" dur="0.8s" fill="freeze"/></path>
+            <polyline points="225.0,110.0 234.6,110.0 244.2,110.0 253.8,110.0 263.4,110.0 273.0,110.0 282.6,110.0 292.2,110.0 301.8,110.0 311.4,110.0 321.0,110.0 330.6,110.0 340.2,110.0 349.8,110.0 359.4,110.0 369.0,102.0 378.6,106.0 388.20000000000005,102.0 397.79999999999995,94.0 407.4,110.0 417.0,86.0 426.6,110.0 436.2,94.0 445.8,102.0 455.4,110.0 465.0,110.0" fill="none" stroke="#3572A5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        
+        <g opacity="0.95">
+            <text x="24" y="155" class="repo-name">Blockchain</text>
+            <text x="24" y="173" class="repo-desc">No description</text>
+            <circle cx="29" cy="183" r="5" fill="#3572A5"/>
+            <text x="39" y="187" class="repo-lang">Python</text>
+            <text x="124" y="187" class="repo-stat">📝 8 commits</text>
+            <path d="M 225,190 L 225.0,190.0 L 234.6,190.0 L 244.2,190.0 L 253.8,190.0 L 263.4,190.0 L 273.0,190.0 L 282.6,190.0 L 292.2,190.0 L 301.8,190.0 L 311.4,190.0 L 321.0,190.0 L 330.6,190.0 L 340.2,190.0 L 349.8,190.0 L 359.4,190.0 L 369.0,190.0 L 378.6,190.0 L 388.20000000000005,190.0 L 397.79999999999995,190.0 L 407.4,186.0 L 417.0,190.0 L 426.6,190.0 L 436.2,190.0 L 445.8,186.0 L 455.4,190.0 L 465.0,166.0 L 465,190 Z" fill="url(#areaGrad1)"><animate attributeName="opacity" from="0" to="1" dur="0.8s" fill="freeze"/></path>
+            <polyline points="225.0,190.0 234.6,190.0 244.2,190.0 253.8,190.0 263.4,190.0 273.0,190.0 282.6,190.0 292.2,190.0 301.8,190.0 311.4,190.0 321.0,190.0 330.6,190.0 340.2,190.0 349.8,190.0 359.4,190.0 369.0,190.0 378.6,190.0 388.20000000000005,190.0 397.79999999999995,190.0 407.4,186.0 417.0,190.0 426.6,190.0 436.2,190.0 445.8,186.0 455.4,190.0 465.0,166.0" fill="none" stroke="#3572A5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        
+        <g opacity="0.95">
+            <text x="24" y="235" class="repo-name">IRHAS</text>
+            <text x="24" y="253" class="repo-desc">Intelligent road hazard analysis system</text>
+            <circle cx="29" cy="263" r="5" fill="#1F6FEB"/>
+            <text x="39" y="267" class="repo-lang">None</text>
+            <text x="124" y="267" class="repo-stat">📝 5 commits</text>
+            <path d="M 225,270 L 225.0,270.0 L 234.6,270.0 L 244.2,270.0 L 253.8,270.0 L 263.4,270.0 L 273.0,270.0 L 282.6,270.0 L 292.2,270.0 L 301.8,270.0 L 311.4,270.0 L 321.0,270.0 L 330.6,270.0 L 340.2,270.0 L 349.8,270.0 L 359.4,270.0 L 369.0,270.0 L 378.6,270.0 L 388.20000000000005,270.0 L 397.79999999999995,270.0 L 407.4,264.0 L 417.0,270.0 L 426.6,270.0 L 436.2,270.0 L 445.8,270.0 L 455.4,270.0 L 465.0,246.0 L 465,270 Z" fill="url(#areaGrad2)"><animate attributeName="opacity" from="0" to="1" dur="0.8s" fill="freeze"/></path>
+            <polyline points="225.0,270.0 234.6,270.0 244.2,270.0 253.8,270.0 263.4,270.0 273.0,270.0 282.6,270.0 292.2,270.0 301.8,270.0 311.4,270.0 321.0,270.0 330.6,270.0 340.2,270.0 349.8,270.0 359.4,270.0 369.0,270.0 378.6,270.0 388.20000000000005,270.0 397.79999999999995,270.0 407.4,264.0 417.0,270.0 426.6,270.0 436.2,270.0 445.8,270.0 455.4,270.0 465.0,246.0" fill="none" stroke="#1F6FEB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        
+
+  </g>
+
+  <!-- Part 3: Weekly -->
+  <g transform="translate(0, 570)">
+    
+  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+  <text x="24" y="38" class="title">📈 Weekly Activity</text>
+  <text x="24" y="58" class="subtitle">Last 7 days</text>
+  <line x1="40" y1="135" x2="455" y2="135" class="baseline"/>
+  
+    <g>
+      <rect x="40" y="135" width="45" height="0" rx="6" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.0s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="135" dur="0.6s" begin="0.0s" fill="freeze"/>
+      </rect>
+      
+      <text x="62.5" y="153" text-anchor="middle" class="day-label">Mon</text>
+    </g>
+    
+    <g>
+      <rect x="100" y="115.0" width="45" height="20.0" rx="6" fill="#39D353" opacity="0.6428571428571428">
+        <animate attributeName="height" from="0" to="20.0" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="115.0" dur="0.6s" begin="0.1s" fill="freeze"/>
+      </rect>
+      <text x="122.5" y="107.0" text-anchor="middle" class="count">10</text>
+      <text x="122.5" y="153" text-anchor="middle" class="day-label">Tue</text>
+    </g>
+    
+    <g>
+      <rect x="160" y="65.0" width="45" height="70.0" rx="6" fill="#39D353" opacity="1.0">
+        <animate attributeName="height" from="0" to="70.0" dur="0.6s" begin="0.2s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="65.0" dur="0.6s" begin="0.2s" fill="freeze"/>
+      </rect>
+      <text x="182.5" y="57.0" text-anchor="middle" class="count">35</text>
+      <text x="182.5" y="153" text-anchor="middle" class="day-label">Wed</text>
+    </g>
+    
+    <g>
+      <rect x="220" y="135" width="45" height="0" rx="6" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="135" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
+      </rect>
+      
+      <text x="242.5" y="153" text-anchor="middle" class="day-label">Thu</text>
+    </g>
+    
+    <g>
+      <rect x="280" y="135" width="45" height="0" rx="6" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.4s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="135" dur="0.6s" begin="0.4s" fill="freeze"/>
+      </rect>
+      
+      <text x="302.5" y="153" text-anchor="middle" class="day-label">Fri</text>
+    </g>
+    
+    <g>
+      <rect x="340" y="135" width="45" height="0" rx="6" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.5s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="135" dur="0.6s" begin="0.5s" fill="freeze"/>
+      </rect>
+      
+      <text x="362.5" y="153" text-anchor="middle" class="day-label">Sat</text>
+    </g>
+    
+    <g>
+      <rect x="400" y="135" width="45" height="0" rx="6" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
+        <animate attributeName="y" from="135" to="135" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
+      </rect>
+      
+      <text x="422.5" y="153" text-anchor="middle" class="day-label">Sun</text>
+    </g>
+    
+
+  </g>
+
+  <!-- Part 4: Time -->
+  <g transform="translate(0, 785)">
+    
+  <rect x="0" y="0" width="495" height="195" rx="10" class="bg"/>
+  <rect x="0" y="0" width="495" height="195" rx="10" class="border"/>
+  <text x="24" y="38" class="title">⏰ When I Code</text>
+  <text x="24" y="58" class="subtitle">Last 30 days activity</text>
+  
+    <g>
+      <rect x="30" y="75" width="55" height="70" rx="8" fill="#39D353" opacity="1.0"/>
+      <text x="57.5" y="100" text-anchor="middle" class="emoji">🔥</text>
+      <text x="57.5" y="120" text-anchor="middle" class="time-count">44</text>
+      <text x="57.5" y="165" text-anchor="middle" class="time-label">Night</text>
+      <text x="57.5" y="178" text-anchor="middle" class="time-label">(00-04)</text>
+    </g>
+    
+    <g>
+      <rect x="95" y="75" width="55" height="70" rx="8" fill="#0D1117" opacity="0.3"/>
+      <text x="122.5" y="100" text-anchor="middle" class="emoji">💤</text>
+      <text x="122.5" y="120" text-anchor="middle" class="time-count">0</text>
+      <text x="122.5" y="165" text-anchor="middle" class="time-label">Dawn</text>
+      <text x="122.5" y="178" text-anchor="middle" class="time-label">(04-08)</text>
+    </g>
+    
+    <g>
+      <rect x="160" y="75" width="55" height="70" rx="8" fill="#0D1117" opacity="0.3"/>
+      <text x="187.5" y="100" text-anchor="middle" class="emoji">💤</text>
+      <text x="187.5" y="120" text-anchor="middle" class="time-count">0</text>
+      <text x="187.5" y="165" text-anchor="middle" class="time-label">Morning</text>
+      <text x="187.5" y="178" text-anchor="middle" class="time-label">(08-12)</text>
+    </g>
+    
+    <g>
+      <rect x="225" y="75" width="55" height="70" rx="8" fill="#006D32" opacity="0.3477272727272727"/>
+      <text x="252.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="252.5" y="120" text-anchor="middle" class="time-count">3</text>
+      <text x="252.5" y="165" text-anchor="middle" class="time-label">Afternoon</text>
+      <text x="252.5" y="178" text-anchor="middle" class="time-label">(12-16)</text>
+    </g>
+    
+    <g>
+      <rect x="290" y="75" width="55" height="70" rx="8" fill="#006D32" opacity="0.3159090909090909"/>
+      <text x="317.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="317.5" y="120" text-anchor="middle" class="time-count">1</text>
+      <text x="317.5" y="165" text-anchor="middle" class="time-label">Evening</text>
+      <text x="317.5" y="178" text-anchor="middle" class="time-label">(16-20)</text>
+    </g>
+    
+    <g>
+      <rect x="355" y="75" width="55" height="70" rx="8" fill="#006D32" opacity="0.475"/>
+      <text x="382.5" y="100" text-anchor="middle" class="emoji">✨</text>
+      <text x="382.5" y="120" text-anchor="middle" class="time-count">11</text>
+      <text x="382.5" y="165" text-anchor="middle" class="time-label">Night</text>
+      <text x="382.5" y="178" text-anchor="middle" class="time-label">(20-24)</text>
+    </g>
+    
+
+  </g>
+</svg>
