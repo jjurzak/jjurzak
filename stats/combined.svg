@@ -59,7 +59,7 @@
     <text x="412" y="92" text-anchor="middle" class="stat-value">65</text>
     <text x="412" y="107" text-anchor="middle" class="stat-label">Events (30d)</text>
   </g>
-  <text x="18" y="130" class="footer">↻ Updated Jan 13, 2026</text>
+  <text x="18" y="130" class="footer">↻ Updated Jan 14, 2026</text>
 
   </g>
 
@@ -75,8 +75,8 @@
             <circle cx="21" cy="82" r="3.5" fill="#3572A5"/>
             <text x="29" y="85" class="repo-lang">Python</text>
             <text x="90" y="85" class="repo-stat">📝 21 commits</text>
-            <path d="M 265,84 L 265.0,84.0 L 272.6,84.0 L 280.2,84.0 L 287.8,84.0 L 295.4,84.0 L 303.0,84.0 L 310.6,84.0 L 318.2,84.0 L 325.8,84.0 L 333.4,84.0 L 341.0,84.0 L 348.6,84.0 L 356.2,84.0 L 363.8,84.0 L 371.4,78.4 L 379.0,81.2 L 386.6,78.4 L 394.20000000000005,78.4 L 401.79999999999995,78.4 L 409.4,67.2 L 417.0,84.0 L 424.6,72.8 L 432.2,78.4 L 439.8,84.0 L 447.4,84.0 L 455.0,84.0 L 455,84 Z" fill="url(#areaGrad0)"/>
-            <polyline points="265.0,84.0 272.6,84.0 280.2,84.0 287.8,84.0 295.4,84.0 303.0,84.0 310.6,84.0 318.2,84.0 325.8,84.0 333.4,84.0 341.0,84.0 348.6,84.0 356.2,84.0 363.8,84.0 371.4,78.4 379.0,81.2 386.6,78.4 394.20000000000005,78.4 401.79999999999995,78.4 409.4,67.2 417.0,84.0 424.6,72.8 432.2,78.4 439.8,84.0 447.4,84.0 455.0,84.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 265,84 L 265.0,84.0 L 272.6,84.0 L 280.2,84.0 L 287.8,84.0 L 295.4,84.0 L 303.0,84.0 L 310.6,84.0 L 318.2,84.0 L 325.8,84.0 L 333.4,84.0 L 341.0,84.0 L 348.6,84.0 L 356.2,84.0 L 363.8,84.0 L 371.4,78.4 L 379.0,81.2 L 386.6,78.4 L 394.20000000000005,72.8 L 401.79999999999995,84.0 L 409.4,67.2 L 417.0,84.0 L 424.6,72.8 L 432.2,78.4 L 439.8,84.0 L 447.4,84.0 L 455.0,84.0 L 455,84 Z" fill="url(#areaGrad0)"/>
+            <polyline points="265.0,84.0 272.6,84.0 280.2,84.0 287.8,84.0 295.4,84.0 303.0,84.0 310.6,84.0 318.2,84.0 325.8,84.0 333.4,84.0 341.0,84.0 348.6,84.0 356.2,84.0 363.8,84.0 371.4,78.4 379.0,81.2 386.6,78.4 394.20000000000005,72.8 401.79999999999995,84.0 409.4,67.2 417.0,84.0 424.6,72.8 432.2,78.4 439.8,84.0 447.4,84.0 455.0,84.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
         <g>
@@ -85,8 +85,8 @@
             <circle cx="21" cy="144" r="3.5" fill="#3572A5"/>
             <text x="29" y="147" class="repo-lang">Python</text>
             <text x="90" y="147" class="repo-stat">📝 8 commits</text>
-            <path d="M 265,146 L 265.0,146.0 L 272.6,146.0 L 280.2,146.0 L 287.8,146.0 L 295.4,146.0 L 303.0,146.0 L 310.6,146.0 L 318.2,146.0 L 325.8,146.0 L 333.4,146.0 L 341.0,146.0 L 348.6,146.0 L 356.2,146.0 L 363.8,146.0 L 371.4,146.0 L 379.0,146.0 L 386.6,146.0 L 394.20000000000005,146.0 L 401.79999999999995,142.64 L 409.4,146.0 L 417.0,146.0 L 424.6,146.0 L 432.2,142.64 L 439.8,146.0 L 447.4,129.2 L 455.0,142.64 L 455,146 Z" fill="url(#areaGrad1)"/>
-            <polyline points="265.0,146.0 272.6,146.0 280.2,146.0 287.8,146.0 295.4,146.0 303.0,146.0 310.6,146.0 318.2,146.0 325.8,146.0 333.4,146.0 341.0,146.0 348.6,146.0 356.2,146.0 363.8,146.0 371.4,146.0 379.0,146.0 386.6,146.0 394.20000000000005,146.0 401.79999999999995,142.64 409.4,146.0 417.0,146.0 424.6,146.0 432.2,142.64 439.8,146.0 447.4,129.2 455.0,142.64" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 265,146 L 265.0,146.0 L 272.6,146.0 L 280.2,146.0 L 287.8,146.0 L 295.4,146.0 L 303.0,146.0 L 310.6,146.0 L 318.2,146.0 L 325.8,146.0 L 333.4,146.0 L 341.0,146.0 L 348.6,146.0 L 356.2,146.0 L 363.8,146.0 L 371.4,146.0 L 379.0,146.0 L 386.6,146.0 L 394.20000000000005,146.0 L 401.79999999999995,143.2 L 409.4,146.0 L 417.0,146.0 L 424.6,146.0 L 432.2,143.2 L 439.8,146.0 L 447.4,129.2 L 455.0,146.0 L 455,146 Z" fill="url(#areaGrad1)"/>
+            <polyline points="265.0,146.0 272.6,146.0 280.2,146.0 287.8,146.0 295.4,146.0 303.0,146.0 310.6,146.0 318.2,146.0 325.8,146.0 333.4,146.0 341.0,146.0 348.6,146.0 356.2,146.0 363.8,146.0 371.4,146.0 379.0,146.0 386.6,146.0 394.20000000000005,146.0 401.79999999999995,143.2 409.4,146.0 417.0,146.0 424.6,146.0 432.2,143.2 439.8,146.0 447.4,129.2 455.0,146.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
         <g>
@@ -120,11 +120,11 @@
     </g>
     
     <g>
-      <rect x="94" y="102.5" width="40" height="2.5" rx="4" fill="#39D353" opacity="0.5121951219512195">
-        <animate attributeName="height" from="0" to="2.5" dur="0.6s" begin="0.1s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="102.5" dur="0.6s" begin="0.1s" fill="freeze"/>
+      <rect x="94" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.1s" fill="freeze"/>
       </rect>
-      <text x="114" y="97.5" text-anchor="middle" class="count">1</text>
+      
       <text x="114" y="119" text-anchor="middle" class="day-label">Tue</text>
     </g>
     
@@ -133,7 +133,7 @@
         <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.2s" fill="freeze"/>
         <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.2s" fill="freeze"/>
       </rect>
-      <text x="176" y="45.0" text-anchor="middle" class="count">41</text>
+      <text x="176" y="45.0" text-anchor="middle" class="count">3</text>
       <text x="176" y="119" text-anchor="middle" class="day-label">Wed</text>
     </g>
     
@@ -147,11 +147,11 @@
     </g>
     
     <g>
-      <rect x="280" y="102.5" width="40" height="2.5" rx="4" fill="#39D353" opacity="0.5121951219512195">
-        <animate attributeName="height" from="0" to="2.5" dur="0.6s" begin="0.4s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="102.5" dur="0.6s" begin="0.4s" fill="freeze"/>
+      <rect x="280" y="86.66666666666667" width="40" height="18.333333333333332" rx="4" fill="#39D353" opacity="0.6666666666666666">
+        <animate attributeName="height" from="0" to="18.333333333333332" dur="0.6s" begin="0.4s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="86.66666666666667" dur="0.6s" begin="0.4s" fill="freeze"/>
       </rect>
-      <text x="300" y="97.5" text-anchor="middle" class="count">1</text>
+      <text x="300" y="81.66666666666667" text-anchor="middle" class="count">1</text>
       <text x="300" y="119" text-anchor="middle" class="day-label">Fri</text>
     </g>
     
