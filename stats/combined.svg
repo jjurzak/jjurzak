@@ -33,7 +33,7 @@
     <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
     <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
 </linearGradient>
-<linearGradient id="areaGrad0" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#1F6FEB;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#1F6FEB;stop-opacity:0.03" /></linearGradient>
+<linearGradient id="areaGrad0" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient><linearGradient id="areaGrad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#3572A5;stop-opacity:0.35" /><stop offset="100%" style="stop-color:#3572A5;stop-opacity:0.03" /></linearGradient>
   </defs>
 
   <g transform="translate(0, 0)">
@@ -56,7 +56,7 @@
     <text x="247" y="92" text-anchor="middle" class="stat-value">0</text>
     <text x="247" y="107" text-anchor="middle" class="stat-label">Followers</text>
 
-    <text x="412" y="92" text-anchor="middle" class="stat-value">64</text>
+    <text x="412" y="92" text-anchor="middle" class="stat-value">0</text>
     <text x="412" y="107" text-anchor="middle" class="stat-label">Events (30d)</text>
   </g>
   <text x="18" y="130" class="footer">↻ Updated Jan 15, 2026</text>
@@ -90,13 +90,13 @@
         </g>
         
         <g>
-            <text x="18" y="184" class="repo-name">IRHAS</text>
-            <text x="18" y="198" class="repo-desc">Intelligent road hazard analy...</text>
-            <circle cx="21" cy="206" r="3.5" fill="#1F6FEB"/>
-            <text x="29" y="209" class="repo-lang">None</text>
-            <text x="90" y="209" class="repo-stat">📝 5 commits</text>
-            <path d="M 265,208 L 265.0,208.0 L 272.6,208.0 L 280.2,208.0 L 287.8,208.0 L 295.4,208.0 L 303.0,208.0 L 310.6,208.0 L 318.2,208.0 L 325.8,208.0 L 333.4,208.0 L 341.0,208.0 L 348.6,208.0 L 356.2,208.0 L 363.8,208.0 L 371.4,208.0 L 379.0,208.0 L 386.6,208.0 L 394.20000000000005,203.8 L 401.79999999999995,208.0 L 409.4,208.0 L 417.0,208.0 L 424.6,208.0 L 432.2,208.0 L 439.8,208.0 L 447.4,191.2 L 455.0,208.0 L 455,208 Z" fill="url(#areaGrad2)"/>
-            <polyline points="265.0,208.0 272.6,208.0 280.2,208.0 287.8,208.0 295.4,208.0 303.0,208.0 310.6,208.0 318.2,208.0 325.8,208.0 333.4,208.0 341.0,208.0 348.6,208.0 356.2,208.0 363.8,208.0 371.4,208.0 379.0,208.0 386.6,208.0 394.20000000000005,203.8 401.79999999999995,208.0 409.4,208.0 417.0,208.0 424.6,208.0 432.2,208.0 439.8,208.0 447.4,191.2 455.0,208.0" fill="none" stroke="#1F6FEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="18" y="184" class="repo-name">CrowdCounter</text>
+            <text x="18" y="198" class="repo-desc">No description</text>
+            <circle cx="21" cy="206" r="3.5" fill="#3572A5"/>
+            <text x="29" y="209" class="repo-lang">Python</text>
+            <text x="90" y="209" class="repo-stat">📝 3 commits</text>
+            <path d="M 265,208 L 265.0,208.0 L 272.6,208.0 L 280.2,208.0 L 287.8,208.0 L 295.4,208.0 L 303.0,208.0 L 310.6,208.0 L 318.2,208.0 L 325.8,208.0 L 333.4,208.0 L 341.0,208.0 L 348.6,208.0 L 356.2,208.0 L 363.8,208.0 L 371.4,208.0 L 379.0,208.0 L 386.6,208.0 L 394.20000000000005,208.0 L 401.79999999999995,208.0 L 409.4,208.0 L 417.0,208.0 L 424.6,208.0 L 432.2,191.2 L 439.8,208.0 L 447.4,208.0 L 455.0,208.0 L 455,208 Z" fill="url(#areaGrad2)"/>
+            <polyline points="265.0,208.0 272.6,208.0 280.2,208.0 287.8,208.0 295.4,208.0 303.0,208.0 310.6,208.0 318.2,208.0 325.8,208.0 333.4,208.0 341.0,208.0 348.6,208.0 356.2,208.0 363.8,208.0 371.4,208.0 379.0,208.0 386.6,208.0 394.20000000000005,208.0 401.79999999999995,208.0 409.4,208.0 417.0,208.0 424.6,208.0 432.2,191.2 439.8,208.0 447.4,208.0 455.0,208.0" fill="none" stroke="#3572A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
 
@@ -147,11 +147,11 @@
     </g>
     
     <g>
-      <rect x="280" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
-        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.4s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.4s" fill="freeze"/>
+      <rect x="280" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.4s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.4s" fill="freeze"/>
       </rect>
-      <text x="300" y="45.0" text-anchor="middle" class="count">1</text>
+      
       <text x="300" y="119" text-anchor="middle" class="day-label">Fri</text>
     </g>
     
@@ -184,17 +184,17 @@
   <text x="18" y="46" class="subtitle">Last 30 days activity</text>
   
     <g>
-      <rect x="22" y="60" width="62" height="58" rx="7" fill="#39D353" opacity="1.0"/>
-      <text x="53" y="78" text-anchor="middle" class="emoji">🔥</text>
-      <text x="53" y="94" text-anchor="middle" class="time-count">47</text>
+      <rect x="22" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="53" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="53" y="94" text-anchor="middle" class="time-count">0</text>
       <text x="53" y="128" text-anchor="middle" class="time-label">Night</text>
       <text x="53" y="137" text-anchor="middle" class="time-label">(00-04)</text>
     </g>
     
     <g>
-      <rect x="97" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.3446808510638298"/>
-      <text x="128" y="78" text-anchor="middle" class="emoji">✨</text>
-      <text x="128" y="94" text-anchor="middle" class="time-count">3</text>
+      <rect x="97" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="128" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="128" y="94" text-anchor="middle" class="time-count">0</text>
       <text x="128" y="128" text-anchor="middle" class="time-label">Dawn</text>
       <text x="128" y="137" text-anchor="middle" class="time-label">(04-08)</text>
     </g>
@@ -208,25 +208,25 @@
     </g>
     
     <g>
-      <rect x="247" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.3148936170212766"/>
-      <text x="278" y="78" text-anchor="middle" class="emoji">✨</text>
-      <text x="278" y="94" text-anchor="middle" class="time-count">1</text>
+      <rect x="247" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="278" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="278" y="94" text-anchor="middle" class="time-count">0</text>
       <text x="278" y="128" text-anchor="middle" class="time-label">Afternoon</text>
       <text x="278" y="137" text-anchor="middle" class="time-label">(12-16)</text>
     </g>
     
     <g>
-      <rect x="322" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.32978723404255317"/>
-      <text x="353" y="78" text-anchor="middle" class="emoji">✨</text>
-      <text x="353" y="94" text-anchor="middle" class="time-count">2</text>
+      <rect x="322" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="353" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="353" y="94" text-anchor="middle" class="time-count">0</text>
       <text x="353" y="128" text-anchor="middle" class="time-label">Evening</text>
       <text x="353" y="137" text-anchor="middle" class="time-label">(16-20)</text>
     </g>
     
     <g>
-      <rect x="397" y="60" width="62" height="58" rx="7" fill="#006D32" opacity="0.46382978723404256"/>
-      <text x="428" y="78" text-anchor="middle" class="emoji">✨</text>
-      <text x="428" y="94" text-anchor="middle" class="time-count">11</text>
+      <rect x="397" y="60" width="62" height="58" rx="7" fill="#0D1117" opacity="0.3"/>
+      <text x="428" y="78" text-anchor="middle" class="emoji">💤</text>
+      <text x="428" y="94" text-anchor="middle" class="time-count">0</text>
       <text x="428" y="128" text-anchor="middle" class="time-label">Night</text>
       <text x="428" y="137" text-anchor="middle" class="time-label">(20-24)</text>
     </g>
