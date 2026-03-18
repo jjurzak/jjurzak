@@ -129,11 +129,11 @@
     </g>
     
     <g>
-      <rect x="156" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
-        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.2s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.2s" fill="freeze"/>
+      <rect x="156" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.2s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.2s" fill="freeze"/>
       </rect>
-      <text x="176" y="45.0" text-anchor="middle" class="count">1</text>
+      
       <text x="176" y="119" text-anchor="middle" class="day-label">Wed</text>
     </g>
     
