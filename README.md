@@ -63,11 +63,10 @@ An application for processing drone footage to detect and count individuals in c
 - **Performance:** Optimized pipeline achieving ~30ms latency per frame on consumer GPUs.
 - **Scope:** Included data annotation, model training, and augmentation logic.
 
-### 🗄️ [Entity Framework Business App](https://github.com/jjurzak/EntityFramework)
-A code-first relational data management system.
-- **Tech:** C#, Entity Framework, SQL.
-- **Key Feature:** Implemented complex schema migrations and CRUD operations without manual SQL scripting.
-
+### 🧠 [Machine Learning & Deep Learning Research Lab](https://github.com/jjurzak/NoD2)
+Implementation and benchmarking of core ML algorithms and deep learning architectures.
+- **Tech:** Python, NumPy, Pandas, Scikit-learn, PyTorch/TensorFlow.
+- **Key Feature:** Implemented foundational machine learning algorithms from scratch to understand internal mechanics and automated the evaluation of model outputs on real-world datasets.
 ---
 
 ## 🎓 Education
