@@ -95,8 +95,8 @@
             <circle cx="21" cy="206" r="3.5" fill="#1F6FEB"/>
             <text x="29" y="209" class="repo-lang">Jupyter Notebook</text>
             <text x="90" y="209" class="repo-stat">📝 8 commits</text>
-            <path d="M 265,208 L 265.0,208.0 L 272.6,208.0 L 280.2,208.0 L 287.8,208.0 L 295.4,208.0 L 303.0,208.0 L 310.6,208.0 L 318.2,208.0 L 325.8,208.0 L 333.4,208.0 L 341.0,208.0 L 348.6,208.0 L 356.2,208.0 L 363.8,208.0 L 371.4,208.0 L 379.0,208.0 L 386.6,208.0 L 394.20000000000005,208.0 L 401.79999999999995,208.0 L 409.4,208.0 L 417.0,208.0 L 424.6,208.0 L 432.2,208.0 L 439.8,191.2 L 447.4,202.4 L 455.0,208.0 L 455,208 Z" fill="url(#areaGrad2)"/>
-            <polyline points="265.0,208.0 272.6,208.0 280.2,208.0 287.8,208.0 295.4,208.0 303.0,208.0 310.6,208.0 318.2,208.0 325.8,208.0 333.4,208.0 341.0,208.0 348.6,208.0 356.2,208.0 363.8,208.0 371.4,208.0 379.0,208.0 386.6,208.0 394.20000000000005,208.0 401.79999999999995,208.0 409.4,208.0 417.0,208.0 424.6,208.0 432.2,208.0 439.8,191.2 447.4,202.4 455.0,208.0" fill="none" stroke="#1F6FEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 265,208 L 265.0,208.0 L 272.6,208.0 L 280.2,208.0 L 287.8,208.0 L 295.4,208.0 L 303.0,208.0 L 310.6,208.0 L 318.2,208.0 L 325.8,208.0 L 333.4,208.0 L 341.0,208.0 L 348.6,208.0 L 356.2,208.0 L 363.8,208.0 L 371.4,208.0 L 379.0,208.0 L 386.6,208.0 L 394.20000000000005,208.0 L 401.79999999999995,208.0 L 409.4,208.0 L 417.0,208.0 L 424.6,208.0 L 432.2,208.0 L 439.8,191.2 L 447.4,208.0 L 455.0,208.0 L 455,208 Z" fill="url(#areaGrad2)"/>
+            <polyline points="265.0,208.0 272.6,208.0 280.2,208.0 287.8,208.0 295.4,208.0 303.0,208.0 310.6,208.0 318.2,208.0 325.8,208.0 333.4,208.0 341.0,208.0 348.6,208.0 356.2,208.0 363.8,208.0 371.4,208.0 379.0,208.0 386.6,208.0 394.20000000000005,208.0 401.79999999999995,208.0 409.4,208.0 417.0,208.0 424.6,208.0 432.2,208.0 439.8,191.2 447.4,208.0 455.0,208.0" fill="none" stroke="#1F6FEB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
         
 
@@ -111,20 +111,20 @@
   <line x1="32" y1="105" x2="465" y2="105" class="baseline"/>
   
     <g>
-      <rect x="32" y="83.0" width="40" height="22.0" rx="4" fill="#39D353" opacity="0.7">
-        <animate attributeName="height" from="0" to="22.0" dur="0.6s" begin="0.0s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="83.0" dur="0.6s" begin="0.0s" fill="freeze"/>
+      <rect x="32" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
+        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.0s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.0s" fill="freeze"/>
       </rect>
-      <text x="52" y="78.0" text-anchor="middle" class="count">2</text>
+      <text x="52" y="45.0" text-anchor="middle" class="count">2</text>
       <text x="52" y="119" text-anchor="middle" class="day-label">Mon</text>
     </g>
     
     <g>
-      <rect x="94" y="94.0" width="40" height="11.0" rx="4" fill="#39D353" opacity="0.6">
-        <animate attributeName="height" from="0" to="11.0" dur="0.6s" begin="0.1s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="94.0" dur="0.6s" begin="0.1s" fill="freeze"/>
+      <rect x="94" y="77.5" width="40" height="27.5" rx="4" fill="#39D353" opacity="0.75">
+        <animate attributeName="height" from="0" to="27.5" dur="0.6s" begin="0.1s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="77.5" dur="0.6s" begin="0.1s" fill="freeze"/>
       </rect>
-      <text x="114" y="89.0" text-anchor="middle" class="count">1</text>
+      <text x="114" y="72.5" text-anchor="middle" class="count">1</text>
       <text x="114" y="119" text-anchor="middle" class="day-label">Tue</text>
     </g>
     
@@ -138,38 +138,38 @@
     </g>
     
     <g>
-      <rect x="218" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
-        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
+      <rect x="218" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.30000000000000004s" fill="freeze"/>
       </rect>
-      <text x="238" y="45.0" text-anchor="middle" class="count">5</text>
+      
       <text x="238" y="119" text-anchor="middle" class="day-label">Thu</text>
     </g>
     
     <g>
-      <rect x="280" y="94.0" width="40" height="11.0" rx="4" fill="#39D353" opacity="0.6">
-        <animate attributeName="height" from="0" to="11.0" dur="0.6s" begin="0.4s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="94.0" dur="0.6s" begin="0.4s" fill="freeze"/>
+      <rect x="280" y="77.5" width="40" height="27.5" rx="4" fill="#39D353" opacity="0.75">
+        <animate attributeName="height" from="0" to="27.5" dur="0.6s" begin="0.4s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="77.5" dur="0.6s" begin="0.4s" fill="freeze"/>
       </rect>
-      <text x="300" y="89.0" text-anchor="middle" class="count">1</text>
+      <text x="300" y="72.5" text-anchor="middle" class="count">1</text>
       <text x="300" y="119" text-anchor="middle" class="day-label">Fri</text>
     </g>
     
     <g>
-      <rect x="342" y="94.0" width="40" height="11.0" rx="4" fill="#39D353" opacity="0.6">
-        <animate attributeName="height" from="0" to="11.0" dur="0.6s" begin="0.5s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="94.0" dur="0.6s" begin="0.5s" fill="freeze"/>
+      <rect x="342" y="77.5" width="40" height="27.5" rx="4" fill="#39D353" opacity="0.75">
+        <animate attributeName="height" from="0" to="27.5" dur="0.6s" begin="0.5s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="77.5" dur="0.6s" begin="0.5s" fill="freeze"/>
       </rect>
-      <text x="362" y="89.0" text-anchor="middle" class="count">1</text>
+      <text x="362" y="72.5" text-anchor="middle" class="count">1</text>
       <text x="362" y="119" text-anchor="middle" class="day-label">Sat</text>
     </g>
     
     <g>
-      <rect x="404" y="94.0" width="40" height="11.0" rx="4" fill="#39D353" opacity="0.6">
-        <animate attributeName="height" from="0" to="11.0" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="94.0" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
+      <rect x="404" y="77.5" width="40" height="27.5" rx="4" fill="#39D353" opacity="0.75">
+        <animate attributeName="height" from="0" to="27.5" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="77.5" dur="0.6s" begin="0.6000000000000001s" fill="freeze"/>
       </rect>
-      <text x="424" y="89.0" text-anchor="middle" class="count">1</text>
+      <text x="424" y="72.5" text-anchor="middle" class="count">1</text>
       <text x="424" y="119" text-anchor="middle" class="day-label">Sun</text>
     </g>
     
