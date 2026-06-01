@@ -111,11 +111,11 @@
   <line x1="32" y1="105" x2="465" y2="105" class="baseline"/>
   
     <g>
-      <rect x="32" y="50.0" width="40" height="55.0" rx="4" fill="#39D353" opacity="1.0">
-        <animate attributeName="height" from="0" to="55.0" dur="0.6s" begin="0.0s" fill="freeze"/>
-        <animate attributeName="y" from="105" to="50.0" dur="0.6s" begin="0.0s" fill="freeze"/>
+      <rect x="32" y="105" width="40" height="0" rx="4" fill="#0D1117" opacity="0.3">
+        <animate attributeName="height" from="0" to="0" dur="0.6s" begin="0.0s" fill="freeze"/>
+        <animate attributeName="y" from="105" to="105" dur="0.6s" begin="0.0s" fill="freeze"/>
       </rect>
-      <text x="52" y="45.0" text-anchor="middle" class="count">5</text>
+      
       <text x="52" y="119" text-anchor="middle" class="day-label">Mon</text>
     </g>
     
